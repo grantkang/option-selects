@@ -35,7 +35,7 @@ export default class ProductList extends React.Component {
       );
     });
     return (
-      <div className="d-flex flex-wrap justify-content-around p-4 bg-light">
+      <div className="d-flex flex-wrap justify-content-around">
         {productListItems}
       </div>
     );

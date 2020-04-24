@@ -7,12 +7,43 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.setView = this.setView.bind(this);
+    this.addToCart = this.addToCart.bind(this);
     this.state = {
       view: {
         name: 'catalog',
         params: {}
-      }
+      },
+      cart: []
     };
+  }
+
+  componentDidMount() {
+    this.getCartItems();
+  }
+
+  getCartItems() {
+    fetch('/api/cart')
+      .then(response => response.json())
+      .then(cart => {
+        this.setState({ cart: cart });
+      });
+  }
+
+  addToCart(product) {
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(product)
+    };
+    fetch('api/cart', req)
+      .then(response => response.json())
+      .then(cartItem => {
+        const newCart = this.state.cart.slice();
+        newCart.push(cartItem);
+        this.setState({ cart: newCart });
+      });
   }
 
   setView(name, params) {
@@ -35,7 +66,8 @@ export default class App extends React.Component {
       case 'details':
         return (
           <ProductDetails
-            onClick={() => this.setView('catalog', {})}
+            goBack={() => this.setView('catalog', {})}
+            addToCart={this.addToCart}
             params={this.state.view.params}
           />
         );
@@ -48,8 +80,10 @@ export default class App extends React.Component {
     const currentView = this.getView();
     return (
       <div className="container-fluid">
-        <Header />
-        {currentView}
+        <Header cartItemCount={this.state.cart.length}/>
+        <div className="p-4 bg-light">
+          {currentView}
+        </div>
       </div>
     );
   }
