@@ -21,7 +21,11 @@ app.get('/api/health-check', (req, res, next) => {
 
 app.get('/api/products', (req, res, next) => {
   const sql = `
-    SELECT *
+    SELECT "image",
+           "name",
+           "price",
+           "productId",
+           "shortDescription"
       FROM "products"
   `;
   db.query(sql)
@@ -30,10 +34,38 @@ app.get('/api/products', (req, res, next) => {
       res.status(200).json(products);
     })
     .catch(err => {
-      console.error(err);
-      res.status(500).json({
-        error: 'An unexpected error occurred.'
-      });
+      next(err);
+    });
+});
+
+app.get('/api/products/:productId', (req, res, next) => {
+  const { productId } = req.params;
+  if (!parseInt(productId, 10)) {
+    return next(new ClientError('"productId" must be a positive integer', 400));
+  }
+
+  const sql = `
+    SELECT "image",
+           "longDescription",
+           "name",
+           "price",
+           "productId",
+           "shortDescription"
+      FROM "products"
+     WHERE "productId" = $1
+  `;
+  const params = [productId];
+  db.query(sql, params)
+    .then(result => {
+      const product = result.rows[0];
+      if (!product) {
+        next(new ClientError(`Cannot find product with "productId" ${productId}`, 404));
+      } else {
+        res.status(200).json(product);
+      }
+    })
+    .catch(err => {
+      next(err);
     });
 });
 
