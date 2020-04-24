@@ -4,7 +4,7 @@ export default class CartSummaryItem extends React.Component {
   render() {
     const cartItem = this.props.cartItem;
     return (
-      <div className="card">
+      <div className="card my-2">
         <div className="row">
           <div className="col-5">
             <img className="card-img-top card-img my-3" src={cartItem.image} alt="" />
