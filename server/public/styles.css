@@ -6,3 +6,7 @@
 .my-card {
   flex-basis: 30%;
 }
+
+.pointer:hover {
+  cursor: pointer;
+}

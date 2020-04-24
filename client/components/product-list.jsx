@@ -23,13 +23,15 @@ export default class ProductList extends React.Component {
 
   render() {
     const productListItems = this.state.products.map(product => {
+      const onClick = this.props.onClick;
       return (
         <ProductListItem
           key={product.productId}
           name={product.name}
           price={product.price}
           imagePath={product.image}
-          description={product.shortDescription}/>
+          description={product.shortDescription}
+          onClick={() => onClick('details', { productId: product.productId })}/>
       );
     });
     return (
