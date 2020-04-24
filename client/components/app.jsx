@@ -7,6 +7,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.setView = this.setView.bind(this);
+    this.addToCart = this.addToCart.bind(this);
     this.state = {
       view: {
         name: 'catalog',
@@ -25,6 +26,23 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(cart => {
         this.setState({ cart: cart });
+      });
+  }
+
+  addToCart(product) {
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(product)
+    };
+    fetch('api/cart', req)
+      .then(response => response.json())
+      .then(cartItem => {
+        const newCart = this.state.cart.slice();
+        newCart.push(cartItem);
+        this.setState({ cart: newCart });
       });
   }
 
@@ -48,7 +66,8 @@ export default class App extends React.Component {
       case 'details':
         return (
           <ProductDetails
-            onClick={() => this.setView('catalog', {})}
+            goBack={() => this.setView('catalog', {})}
+            addToCart={this.addToCart}
             params={this.state.view.params}
           />
         );
