@@ -3,6 +3,6 @@
   height: 300px;
 }
 
-body * {
-  box-sizing: border-box;
+.my-card {
+  flex-basis: 30%;
 }

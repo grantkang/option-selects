@@ -9,7 +9,7 @@ export default class ProductListItem extends React.Component {
 
     return (
 
-      <div className="card my-card m-4 w-25">
+      <div className="card m-4 my-card">
         <img className="card-img-top card-img my-3" src={imagePath} alt="Product Image" />
         <div className="card-body">
           <h5 className="card-title">{name}</h5>
