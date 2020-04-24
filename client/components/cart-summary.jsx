@@ -6,8 +6,8 @@ export default class CartSummer extends React.Component {
     const cartItems = this.props.cart.map(item => {
       return (
         <CartSummaryItem
-          key={item.productId}
-          product={item.product} />
+          key={item.cartItemId}
+          cartItem={item} />
       );
     });
 
