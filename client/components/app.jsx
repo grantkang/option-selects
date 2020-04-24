@@ -61,7 +61,7 @@ export default class App extends React.Component {
     const currentView = this.getView();
     return (
       <div className="container-fluid">
-        <Header />
+        <Header cartItemCount={this.state.cart.length}/>
         {currentView}
       </div>
     );
