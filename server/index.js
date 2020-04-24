@@ -70,7 +70,34 @@ app.get('/api/products/:productId', (req, res, next) => {
 });
 
 app.get('/api/cart', (req, res, next) => {
-  res.status(200).json([]);
+  const cartId = req.session.cartId;
+  if (!cartId) {
+    return res.status(200).json([]);
+  }
+  const sql = `
+    select "c"."cartItemId",
+           "c"."price",
+           "p"."productId",
+           "p"."image",
+           "p"."name",
+           "p"."shortDescription"
+      FROM "cartItems" AS "c"
+      JOIN "products" AS "p" USING ("productId")
+     WHERE "c"."cartId" = $1
+  `;
+  const params = [cartId];
+  db.query(sql, params)
+    .then(result => {
+      const cart = result.rows[0];
+      if (!cart) {
+        next(new ClientError(`Cannot find cart with "cartId" ${cartId}`, 404));
+      } else {
+        res.status(200).json(cart);
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 
 app.post('/api/cart', (req, res, next) => {
