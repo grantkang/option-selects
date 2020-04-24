@@ -38,12 +38,33 @@ export default class App extends React.Component {
       },
       body: JSON.stringify(product)
     };
-    fetch('api/cart', req)
+    fetch('/api/cart', req)
       .then(response => response.json())
       .then(cartItem => {
         const newCart = this.state.cart.slice();
         newCart.push(cartItem);
         this.setState({ cart: newCart });
+      });
+  }
+
+  placeOrder(orderSubmission) {
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderSubmission)
+    };
+    fetch('/api/orders', req)
+      .then(response => response.json())
+      .then(processedOrder => {
+        this.setState({
+          cart: [],
+          view: {
+            name: 'catalog',
+            params: {}
+          }
+        });
       });
   }
 
