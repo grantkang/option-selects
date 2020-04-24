@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
+import CartSummary from './cart-summary';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -71,6 +72,12 @@ export default class App extends React.Component {
             params={this.state.view.params}
           />
         );
+      case 'cart':
+        return (
+          <CartSummary
+            goBack={() => this.setView('catalog', {})}
+            cart={this.state.cart} />
+        );
       default:
         return null;
     }
@@ -80,7 +87,9 @@ export default class App extends React.Component {
     const currentView = this.getView();
     return (
       <div className="container-fluid">
-        <Header cartItemCount={this.state.cart.length}/>
+        <Header
+          cartItemCount={this.state.cart.length}
+          viewCartSummary={() => this.setView('cart', {})}/>
         <div className="p-4 bg-light">
           {currentView}
         </div>
