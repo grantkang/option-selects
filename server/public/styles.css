@@ -1,0 +1,8 @@
+.card-img {
+  object-fit: scale-down;
+  height: 300px;
+}
+
+.my-card {
+  flex-basis: 30%;
+}
