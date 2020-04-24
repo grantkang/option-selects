@@ -9,6 +9,18 @@ export default class ProductList extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.getProducts();
+  }
+
+  getProducts() {
+    fetch('/api/products')
+      .then(response => response.json())
+      .then(products => {
+        this.setState({ products: products });
+      });
+  }
+
   render() {
     const productListItems = this.state.products.map(product => {
       return (
@@ -16,12 +28,12 @@ export default class ProductList extends React.Component {
           key={product.productId}
           name={product.name}
           price={product.price}
-          imageUrl={product.image}
+          imagePath={product.image}
           description={product.shortDescription}/>
       );
     });
     return (
-      <div>
+      <div className="my-deck p-4 bg-light">
         {productListItems}
       </div>
     );
