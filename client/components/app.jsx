@@ -16,6 +16,10 @@ export default class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.getCartItems();
+  }
+
   getCartItems() {
     fetch('/api/cart')
       .then(response => response.json())
