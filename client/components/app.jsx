@@ -16,6 +16,14 @@ export default class App extends React.Component {
     };
   }
 
+  getCartItems() {
+    fetch('/api/cart')
+      .then(response => response.json())
+      .then(cart => {
+        this.setState({ cart: cart });
+      });
+  }
+
   setView(name, params) {
     const newView = {
       name: name,
