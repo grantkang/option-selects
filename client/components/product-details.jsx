@@ -23,7 +23,7 @@ export default class ProductDetails extends React.Component {
         <div className="p-4 bg-light">
           <div className="card m-4">
             <div className="card-body">
-              <span className="pointer" onClick={this.props.onClick}>&#60; back to catalog</span>
+              <span className="pointer" onClick={this.props.goBack}>&#60; back to catalog</span>
               <div className="row">
                 <div className="col-5">
                   <img className="card-img-top card-img my-3" src={product.image} alt=""/>
@@ -32,6 +32,7 @@ export default class ProductDetails extends React.Component {
                   <h3 className="card-title">{product.name}</h3>
                   <p className="card-text text-muted">{`$${(product.price / 100).toFixed(2)}`}</p>
                   <p className="card-text">{product.shortDescription}</p>
+                  <button className="btn btn-primary" onClick={() => this.props.addToCart(product)}>Add to Cart</button>
                 </div>
               </div>
               <div className="row">
