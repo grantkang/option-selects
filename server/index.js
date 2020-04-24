@@ -181,6 +181,33 @@ app.post('/api/cart', (req, res, next) => {
     });
 });
 
+app.post('/api/orders', (req, res, next) => {
+  const { name, creditCard, shippingAddress } = req.body;
+  const cartId = req.session.cartId;
+  if (!cartId) {
+    return next(new ClientError('No cart on current session', 400));
+  }
+  if (!(name.trim() + creditCard.trim() + shippingAddress.trim())) {
+    return next(new ClientError('"name","creditCard","shippingAddress" are all required', 400));
+  }
+
+  const sql = `
+    INSERT INTO "orders" ("cartId", "name", "creditCard", "shippingAddress")
+    VALUES ($1, $2, $3, $4)
+    RETURNING "createdAt", "creditCard", "name", "orderId", "shippingAddress"
+  `;
+  const params = [cartId, name, creditCard, shippingAddress];
+  db.query(sql, params)
+    .then(result => {
+      const order = result.rows[0];
+      delete req.session.cartId;
+      res.status(201).json(order);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
