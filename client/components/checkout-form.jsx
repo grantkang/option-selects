@@ -4,6 +4,7 @@ export default class CheckoutForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       name: '',
       creditCard: '',
@@ -26,7 +27,7 @@ export default class CheckoutForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
+      <form onSubmit={this.handleSubmit}>
         <h1>Checkout</h1>
         <span>{`Order Total: $${(this.props.params.orderTotal / 100).toFixed(2)}`}</span>
         <div className="form-group">
@@ -36,7 +37,8 @@ export default class CheckoutForm extends React.Component {
             name="name"
             className="form-control"
             id="nameInput"
-            value={this.state.name}/>
+            value={this.state.name}
+            onChange={this.handleChange}/>
         </div>
         <div className="form-group">
           <label htmlFor="creditCardInput">Credit Card</label>
@@ -45,7 +47,8 @@ export default class CheckoutForm extends React.Component {
             name="creditCard"
             className="form-control"
             id="creditCardInput"
-            value={this.state.creditCard}/>
+            value={this.state.creditCard}
+            onChange={this.handleChange}/>
         </div>
         <div className="form-group">
           <label htmlFor="addressInput">Shipping Address</label>
@@ -54,7 +57,8 @@ export default class CheckoutForm extends React.Component {
             className="form-control"
             id="addressInput"
             rows="4"
-            value={this.state.shippingAddress}></textarea>
+            value={this.state.shippingAddress}
+            onChange={this.handleChange}></textarea>
         </div>
         <div className="d-flex align-items-center justify-content-between">
           <span className="pointer" onClick={() => this.props.setView('catalog', {})}>&#60; Continue Shopping</span>
