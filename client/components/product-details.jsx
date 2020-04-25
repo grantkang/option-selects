@@ -22,7 +22,7 @@ export default class ProductDetails extends React.Component {
       return (
         <div className="card m-4">
           <div className="card-body">
-            <span className="pointer" onClick={this.props.goBack}>&#60; back to catalog</span>
+            <span className="pointer" onClick={() => { this.props.setView('catalog', {}); }}>&#60; back to catalog</span>
             <div className="row">
               <div className="col-5">
                 <img className="card-img-top card-img my-3" src={product.image} alt=""/>
