@@ -16,12 +16,15 @@ export default class CartSummer extends React.Component {
 
     return (
       <div>
-        <span className="pointer" onClick={this.props.goBack}>&#60; back to catalog</span>
+        <span className="pointer" onClick={() => this.props.setView('catalog', {})}>&#60; back to catalog</span>
         <h2>My Cart</h2>
         <div className="d-flex flex-column">
           {cartItems}
         </div>
-        <h2>{`Item Total: $${(totalPrice / 100).toFixed(2)}`}</h2>
+        <div className="d-flex align-items-center justify-content-between">
+          <h2>{`Item Total: $${(totalPrice / 100).toFixed(2)}`}</h2>
+          <button className="btn btn-primary" onClick={() => { this.props.setView('checkout', { orderTotal: totalPrice }); }}>Checkout</button>
+        </div>
       </div>
     );
   }

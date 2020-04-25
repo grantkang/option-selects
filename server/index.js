@@ -187,7 +187,7 @@ app.post('/api/orders', (req, res, next) => {
   if (!cartId) {
     return next(new ClientError('No cart on current session', 400));
   }
-  if (!(name.trim() + creditCard.trim() + shippingAddress.trim())) {
+  if (!name.trim() || !creditCard.trim() || !shippingAddress.trim()) {
     return next(new ClientError('"name","creditCard","shippingAddress" are all required', 400));
   }
 

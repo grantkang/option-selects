@@ -3,12 +3,14 @@ import Header from './header';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
 import CartSummary from './cart-summary';
+import CheckoutForm from './checkout-form';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.setView = this.setView.bind(this);
     this.addToCart = this.addToCart.bind(this);
+    this.placeOrder = this.placeOrder.bind(this);
     this.state = {
       view: {
         name: 'catalog',
@@ -38,12 +40,33 @@ export default class App extends React.Component {
       },
       body: JSON.stringify(product)
     };
-    fetch('api/cart', req)
+    fetch('/api/cart', req)
       .then(response => response.json())
       .then(cartItem => {
         const newCart = this.state.cart.slice();
         newCart.push(cartItem);
         this.setState({ cart: newCart });
+      });
+  }
+
+  placeOrder(orderSubmission) {
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderSubmission)
+    };
+    fetch('/api/orders', req)
+      .then(response => response.json())
+      .then(processedOrder => {
+        this.setState({
+          cart: [],
+          view: {
+            name: 'catalog',
+            params: {}
+          }
+        });
       });
   }
 
@@ -67,7 +90,7 @@ export default class App extends React.Component {
       case 'details':
         return (
           <ProductDetails
-            goBack={() => this.setView('catalog', {})}
+            setView={this.setView}
             addToCart={this.addToCart}
             params={this.state.view.params}
           />
@@ -75,8 +98,15 @@ export default class App extends React.Component {
       case 'cart':
         return (
           <CartSummary
-            goBack={() => this.setView('catalog', {})}
+            setView={this.setView}
             cart={this.state.cart} />
+        );
+      case 'checkout':
+        return (
+          <CheckoutForm
+            setView={this.setView}
+            placeOrder={this.placeOrder}
+            params={this.state.view.params} />
         );
       default:
         return null;
