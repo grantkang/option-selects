@@ -8,7 +8,7 @@ export default class ProductListItem extends React.Component {
     const description = this.props.description;
 
     return (
-      <div className="card m-4 my-card pointer" onClick={this.props.onClick}>
+      <div className="product-list-item-card card pointer col-md-3 m-2 col-sm-12" onClick={this.props.onClick}>
         <img className="card-img-top card-img my-3" src={imagePath} alt="Product Image" />
         <div className="card-body">
           <h5 className="card-title">{name}</h5>
