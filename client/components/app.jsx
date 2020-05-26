@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Header from './header';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
 import CartSummary from './cart-summary';
 import CheckoutForm from './checkout-form';
+import NotificationModal from './notification-modal';
+
+const appTitle = 'Wicked Sales';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -11,17 +14,40 @@ export default class App extends React.Component {
     this.setView = this.setView.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     this.state = {
       view: {
         name: 'catalog',
         params: {}
       },
-      cart: []
+      cart: [],
+      modal: {
+        isOpen: true,
+        header: 'Hello World',
+        body: `Welcome to ${appTitle}! This is just a demo so it is not a real store. Please do not use your real info!`,
+        options: [{ label: 'OK, got it!' }]
+      }
     };
   }
 
   componentDidMount() {
     this.getCartItems();
+  }
+
+  closeModal() {
+    const newState = Object.assign({}, this.state.modal);
+    newState.isOpen = false;
+    this.setState({ modal: newState });
+  }
+
+  openModal(header, body, options) {
+    const newState = {
+      isOpen: true,
+      header: header,
+      body: body,
+      options: options
+    };
+    this.setState({ modal: newState });
   }
 
   getCartItems() {
@@ -115,15 +141,19 @@ export default class App extends React.Component {
 
   render() {
     const currentView = this.getView();
+    const modal = Object.assign({}, this.state.modal);
     return (
-      <div className="container-fluid">
-        <Header
-          cartItemCount={this.state.cart.length}
-          viewCartSummary={() => this.setView('cart', {})}/>
-        <div className="p-4 bg-light">
-          {currentView}
+      <Fragment>
+        {modal.isOpen ? <NotificationModal modal={modal} close={this.closeModal} /> : null}
+        <div className="container-fluid">
+          <Header
+            cartItemCount={this.state.cart.length}
+            viewCartSummary={() => this.setView('cart', {})} />
+          <div className="p-4 bg-light">
+            {currentView}
+          </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
