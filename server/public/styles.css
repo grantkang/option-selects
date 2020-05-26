@@ -6,3 +6,18 @@
 .pointer:hover {
   cursor: pointer;
 }
+
+#modal-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 1;
+}
+
+#modal-container {
+  z-index: 2;
+}
