@@ -8,7 +8,8 @@ export default class CheckoutForm extends React.Component {
     this.state = {
       name: '',
       creditCard: '',
-      shippingAddress: ''
+      shippingAddress: '',
+      creditCardError: false
     };
   }
 
@@ -20,9 +21,17 @@ export default class CheckoutForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    if (!this.creditCardIsValid()) {
+      this.setState({ creditCardError: true });
+      return;
+    }
     const orderInfo = Object.assign({}, this.state);
     this.props.placeOrder(orderInfo);
     e.reset();
+  }
+
+  creditCardIsValid() {
+    return this.state.creditCard.match(/\d{4}-?\d{4}-?\d{4}-?\d{4}/);
   }
 
   render() {
@@ -33,6 +42,7 @@ export default class CheckoutForm extends React.Component {
         <div className="form-group">
           <label htmlFor="nameInput">Name</label>
           <input
+            required
             type="text"
             name="name"
             className="form-control"
@@ -43,16 +53,19 @@ export default class CheckoutForm extends React.Component {
         <div className="form-group">
           <label htmlFor="creditCardInput">Credit Card</label>
           <input
+            required
             type="text"
             name="creditCard"
-            className="form-control"
+            className={this.state.creditCardError ? 'form-control is-invalid' : 'form-control'}
             id="creditCardInput"
             value={this.state.creditCard}
-            onChange={this.handleChange}/>
+            onChange={this.handleChange}></input>
+          {this.state.creditCardError ? <small className="text-danger">Please input a valid credit card number</small> : null }
         </div>
         <div className="form-group">
           <label htmlFor="addressInput">Shipping Address</label>
           <textarea
+            required
             name="shippingAddress"
             className="form-control"
             id="addressInput"
