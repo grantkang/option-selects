@@ -27,7 +27,6 @@ export default class CheckoutForm extends React.Component {
     }
     const orderInfo = Object.assign({}, this.state);
     this.props.placeOrder(orderInfo);
-    e.reset();
   }
 
   creditCardIsValid() {
