@@ -148,6 +148,7 @@ export default class App extends React.Component {
         <div className="container-fluid">
           <Header
             cartItemCount={this.state.cart.length}
+            viewProductList={() => this.setView('catalog', {}) }
             viewCartSummary={() => this.setView('cart', {})} />
           <div className="p-4 bg-light">
             {currentView}
