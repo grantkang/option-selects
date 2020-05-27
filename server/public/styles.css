@@ -21,3 +21,7 @@
 #modal-container {
   z-index: 2;
 }
+
+.product-list-item-card {
+  height: 100%;
+}
