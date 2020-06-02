@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -10,15 +10,13 @@ import ProductDetails from './product-details';
 import CartSummary from './cart-summary';
 import CheckoutForm from './checkout-form';
 import NotificationModal from './notification-modal';
+import AppContext from '../lib/context';
 
 const appTitle = 'Wicked Sales';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.addToCart = this.addToCart.bind(this);
-    this.placeOrder = this.placeOrder.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.state = {
       view: {
         name: 'catalog',
@@ -31,6 +29,12 @@ export default class App extends React.Component {
         body: `Welcome to ${appTitle}! This is just a demo so it is not a real store. Please do not use your real info!`,
         options: [{ label: 'OK, got it!' }]
       }
+    };
+    this.contextValue = {
+      addToCart: this.addToCart.bind(this),
+      placeOrder: this.placeOrder.bind(this),
+      closeModal: this.closeModal.bind(this),
+      openModal: this.openModal.bind(this)
     };
   }
 
@@ -103,12 +107,12 @@ export default class App extends React.Component {
   render() {
     const modal = Object.assign({}, this.state.modal);
     return (
-      <Fragment>
-        {modal.isOpen ? <NotificationModal modal={modal} close={this.closeModal} /> : null}
+      <AppContext.Provider value={this.contextValue}>
+        {modal.isOpen ? <NotificationModal modal={modal} close={this.contextValue.closeModal} /> : null}
         <div className="container-fluid">
           <Header
             cartItemCount={this.state.cart.length}
-            viewProductList={() => this.setView('catalog', {}) }
+            viewProductList={() => this.setView('catalog', {})}
             viewCartSummary={() => this.setView('cart', {})} />
           <Router>
             <div className="p-4 bg-light">
@@ -129,7 +133,7 @@ export default class App extends React.Component {
             </div>
           </Router>
         </div>
-      </Fragment>
+      </AppContext.Provider>
     );
   }
 }
