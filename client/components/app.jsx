@@ -16,7 +16,6 @@ const appTitle = 'Wicked Sales';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.setView = this.setView.bind(this);
     this.addToCart = this.addToCart.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -101,49 +100,6 @@ export default class App extends React.Component {
       });
   }
 
-  setView(name, params) {
-    const newView = {
-      name: name,
-      params: params
-    };
-    this.setState({
-      view: newView
-    });
-  }
-
-  getView() {
-    switch (this.state.view.name) {
-      case 'catalog':
-        return (
-          <ProductList
-            onClick={this.setView}/>
-        );
-      case 'details':
-        return (
-          <ProductDetails
-            setView={this.setView}
-            addToCart={this.addToCart}
-            params={this.state.view.params}
-          />
-        );
-      case 'cart':
-        return (
-          <CartSummary
-            setView={this.setView}
-            cart={this.state.cart} />
-        );
-      case 'checkout':
-        return (
-          <CheckoutForm
-            setView={this.setView}
-            placeOrder={this.placeOrder}
-            params={this.state.view.params} />
-        );
-      default:
-        return null;
-    }
-  }
-
   render() {
     const modal = Object.assign({}, this.state.modal);
     return (
@@ -165,6 +121,9 @@ export default class App extends React.Component {
                 </Route>
                 <Route path="/cart">
                   <CartSummary />
+                </Route>
+                <Route path="/checkout">
+                  <CheckoutForm />
                 </Route>
               </Switch>
             </div>
