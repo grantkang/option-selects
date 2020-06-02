@@ -1,4 +1,9 @@
 import React, { Fragment } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom';
 import Header from './header';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
@@ -140,7 +145,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    const currentView = this.getView();
     const modal = Object.assign({}, this.state.modal);
     return (
       <Fragment>
@@ -150,9 +154,21 @@ export default class App extends React.Component {
             cartItemCount={this.state.cart.length}
             viewProductList={() => this.setView('catalog', {}) }
             viewCartSummary={() => this.setView('cart', {})} />
-          <div className="p-4 bg-light">
-            {currentView}
-          </div>
+          <Router>
+            <div className="p-4 bg-light">
+              <Switch>
+                <Route exact path="/">
+                  <ProductList />
+                </Route>
+                <Route path="/products/:id">
+                  <ProductDetails />
+                </Route>
+                <Route path="/cart">
+                  <CartSummary />
+                </Route>
+              </Switch>
+            </div>
+          </Router>
         </div>
       </Fragment>
     );
