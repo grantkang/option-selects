@@ -35,7 +35,8 @@ export default class App extends React.Component {
       placeOrder: this.placeOrder.bind(this),
       closeModal: this.closeModal.bind(this),
       openModal: this.openModal.bind(this),
-      getApplicationTitle: () => { return appTitle; }
+      getApplicationTitle: () => { return appTitle; },
+      getCart: () => { return this.state.cart.slice(); }
     };
   }
 
