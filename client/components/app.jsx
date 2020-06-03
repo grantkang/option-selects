@@ -34,7 +34,8 @@ export default class App extends React.Component {
       addToCart: this.addToCart.bind(this),
       placeOrder: this.placeOrder.bind(this),
       closeModal: this.closeModal.bind(this),
-      openModal: this.openModal.bind(this)
+      openModal: this.openModal.bind(this),
+      getApplicationTitle: () => { return appTitle; }
     };
   }
 
@@ -110,11 +111,9 @@ export default class App extends React.Component {
       <AppContext.Provider value={this.contextValue}>
         {modal.isOpen ? <NotificationModal modal={modal} close={this.contextValue.closeModal} /> : null}
         <div className="container-fluid">
-          <Header
-            cartItemCount={this.state.cart.length}
-            viewProductList={() => this.setView('catalog', {})}
-            viewCartSummary={() => this.setView('cart', {})} />
           <Router>
+            <Header
+              cartItemCount={this.state.cart.length} />
             <div className="p-4 bg-light">
               <Switch>
                 <Route exact path="/">
