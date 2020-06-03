@@ -11,8 +11,20 @@ import CartSummary from './cart-summary';
 import CheckoutForm from './checkout-form';
 import NotificationModal from './notification-modal';
 import AppContext from '../lib/context';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 const appTitle = 'Wicked Sales';
+
+const defaultTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#232F3E'
+    },
+    secondary: {
+      main: '#F1C963'
+    }
+  }
+});
 
 export default class App extends React.Component {
   constructor(props) {
@@ -110,8 +122,8 @@ export default class App extends React.Component {
     const modal = Object.assign({}, this.state.modal);
     return (
       <AppContext.Provider value={this.contextValue}>
-        {modal.isOpen ? <NotificationModal modal={modal} close={this.contextValue.closeModal} /> : null}
-        <div className="container-fluid">
+        <ThemeProvider theme={defaultTheme}>
+          {modal.isOpen ? <NotificationModal modal={modal} close={this.contextValue.closeModal} /> : null}
           <Router>
             <Header
               cartItemCount={this.state.cart.length} />
@@ -132,7 +144,7 @@ export default class App extends React.Component {
               </Switch>
             </div>
           </Router>
-        </div>
+        </ThemeProvider>
       </AppContext.Provider>
     );
   }
