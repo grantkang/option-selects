@@ -1,44 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import ProductListItem from './product-list-item';
 
-export default class ProductList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      products: []
-    };
-  }
+export default function ProductList(props) {
+  const [products, setProducts] = useState([]);
+  const history = useHistory();
 
-  componentDidMount() {
-    this.getProducts();
-  }
-
-  getProducts() {
+  useEffect(() => {
     fetch('/api/products')
       .then(response => response.json())
       .then(products => {
-        this.setState({ products: products });
+        setProducts(products);
       });
-  }
+  }, []);
 
-  render() {
-    const productListItems = this.state.products.map(product => {
-      const onClick = this.props.onClick;
-      return (
-        <ProductListItem
-          key={product.productId}
-          name={product.name}
-          price={product.price}
-          imagePath={product.image}
-          description={product.shortDescription}
-          onClick={() => onClick('details', { productId: product.productId })}/>
-      );
-    });
+  const productListItems = products.map(product => {
     return (
-      <div className="d-flex flex-wrap justify-content-around">
-        {productListItems}
-      </div>
+      <ProductListItem
+        key={product.productId}
+        name={product.name}
+        price={product.price}
+        imagePath={product.image}
+        description={product.shortDescription}
+        onClick={() => history.push(`/products/${product.productId}`)}
+      />
     );
-  }
+  });
+  return (
+    <div className="d-flex flex-wrap justify-content-around">
+      {productListItems}
+    </div>
+  );
 
 }
