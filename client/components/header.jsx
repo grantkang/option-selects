@@ -7,7 +7,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 import ApplicationContext from '../lib/context';
-import { Toolbar, makeStyles } from '@material-ui/core';
+import { Toolbar, makeStyles, Container } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   titleContainer: {
@@ -32,20 +32,22 @@ export default function Header(props) {
 
   return (
     <AppBar position="sticky">
-      <Toolbar>
-        <IconButton edge="start" aria-label="menu">
-          <MenuIcon className={classes.icon}/>
-        </IconButton>
-        <div className={classes.titleContainer}>
-          <Typography variant="h6" className={classes.title} display="inline" noWrap onClick={() => history.push('/')}>
-            {context.getApplicationTitle()}
-          </Typography>
-        </div>
-        <Typography variant="h6">{cartItemCountText}</Typography>
-        <IconButton area-label="cart" onClick={() => history.push('/cart')}>
-          <ShoppingCartIcon className={classes.icon}/>
-        </IconButton>
-      </Toolbar>
+      <Container>
+        <Toolbar>
+          <IconButton edge="start" aria-label="menu">
+            <MenuIcon className={classes.icon} />
+          </IconButton>
+          <div className={classes.titleContainer}>
+            <Typography variant="h6" className={classes.title} display="inline" noWrap onClick={() => history.push('/')}>
+              {context.getApplicationTitle()}
+            </Typography>
+          </div>
+          <Typography variant="h6">{cartItemCountText}</Typography>
+          <IconButton area-label="cart" onClick={() => history.push('/cart')}>
+            <ShoppingCartIcon className={classes.icon} />
+          </IconButton>
+        </Toolbar>
+      </Container>
     </AppBar>
   );
 }

@@ -11,7 +11,7 @@ import CartSummary from './cart-summary';
 import CheckoutForm from './checkout-form';
 import NotificationModal from './notification-modal';
 import AppContext from '../lib/context';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider, Container } from '@material-ui/core';
 
 const appTitle = 'Wicked Sales';
 
@@ -128,20 +128,22 @@ export default class App extends React.Component {
             <Header
               cartItemCount={this.state.cart.length} />
             <div className="p-4 bg-light">
-              <Switch>
-                <Route exact path="/">
-                  <ProductList />
-                </Route>
-                <Route path="/products/:id">
-                  <ProductDetails />
-                </Route>
-                <Route path="/cart">
-                  <CartSummary />
-                </Route>
-                <Route path="/checkout">
-                  <CheckoutForm />
-                </Route>
-              </Switch>
+              <Container>
+                <Switch>
+                  <Route exact path="/">
+                    <ProductList />
+                  </Route>
+                  <Route path="/products/:id">
+                    <ProductDetails />
+                  </Route>
+                  <Route path="/cart">
+                    <CartSummary />
+                  </Route>
+                  <Route path="/checkout">
+                    <CheckoutForm />
+                  </Route>
+                </Switch>
+              </Container>
             </div>
           </Router>
         </ThemeProvider>
