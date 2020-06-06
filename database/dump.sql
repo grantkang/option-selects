@@ -614,6 +614,14 @@ COPY public.colors ("colorId", name, hex) FROM stdin;
 5	red	#c10202
 6	white	#eae3df
 7	yellow	#fec101
+8	dark-blue	#7770db
+9	dark-hai-black	#454844
+10	orange	#ff4917
+11	royal-blue	#1837a2
+12	vermillion	#e11502
+13	violet	#fa7af0
+14	lime-green	#96e23b
+15	purple	#9574bc
 \.
 
 
@@ -630,6 +638,103 @@ COPY public.orders ("orderId", "cartId", name, "creditCard", "shippingAddress", 
 --
 
 COPY public."productImages" ("productId", "colorId", "imagePath", "styleId", "productImageId") FROM stdin;
+1	\N	/images/products/phailbox-model-f.png	\N	2
+2	\N	/images/products/phailbox-model-k.png	\N	3
+3	\N	/images/products/phailbox-model-r.png	\N	4
+4	\N	/images/products/phailbox-model-p.png	\N	5
+5	\N	/images/products/hitbox-1.png	\N	6
+6	\N	/images/products/smashbox-1.png	\N	7
+7	\N	/images/products/obsidian.jpg	\N	8
+7	\N	/images/products/obsidian-2.jpg	\N	9
+7	\N	/images/products/obsidian-3.jpg	\N	10
+7	\N	/images/products/obsidian-4.jpg	\N	11
+8	\N	/images/products/panthera-evo.jpg	\N	12
+8	\N	/images/products/panthera-evo-2.jpg	\N	13
+9	1	/images/products/hrap-4-kai-black.jpg	\N	14
+9	1	/images/products/hrap-4-kai-black-2.jpg	\N	15
+9	6	/images/products/hrap-4-kai-white.jpg	\N	16
+9	6	/images/products/hrap-4-kai-white-2.jpg	\N	17
+10	\N	/images/products/hori-fe.jpg	\N	18
+10	\N	/images/products/hori-fe-2.jpg	\N	19
+10	\N	/images/products/hori-fe-3.jpg	\N	20
+11	\N	/images/products/madcatz-te2p.jpg	\N	21
+11	\N	/images/products/madcatz-te2p-2.jpg	\N	22
+12	\N	/images/products/seimitsu-ls-32.png	\N	23
+13	\N	/images/products/hori-hayabusa.png	\N	24
+13	\N	/images/products/hori-hayabusa-2.png	\N	25
+14	\N	/images/products/crown-dongpal.png	\N	26
+15	1	/images/products/taeyoung-black.png	\N	27
+15	3	/images/products/taeyoung-green.png	\N	28
+15	5	/images/products/taeyoung-red.png	\N	29
+15	6	/images/products/taeyoung-white.png	\N	30
+16	\N	/images/products/jlf.jpg	\N	31
+17	\N	/images/products/knee.png	\N	32
+17	\N	/images/products/knee-2.png	\N	33
+17	\N	/images/products/knee-3.png	\N	34
+18	\N	/images/products/sanwa-silent-solid-all.jpg	\N	35
+18	1	/images/products/sanwa-silent-solid-black.jpg	\N	36
+18	2	/images/products/sanwa-silent-solid-blue.jpg	\N	37
+18	8	/images/products/sanwa-silent-solid-dark-blue.jpg	\N	38
+18	9	/images/products/sanwa-silent-solid-dark-hai-black.jpg	\N	39
+18	3	/images/products/sanwa-silent-solid-green.jpg	\N	40
+18	10	/images/products/sanwa-silent-solid-orange.jpg	\N	41
+18	4	/images/products/sanwa-silent-solid-pink.jpg	\N	42
+18	5	/images/products/sanwa-silent-solid-red.jpg	\N	43
+18	11	/images/products/sanwa-silent-solid-royal-blue.jpg	\N	44
+18	12	/images/products/sanwa-silent-solid-vermillion.jpg	\N	45
+18	13	/images/products/sanwa-silent-solid-violet.jpg	\N	46
+18	7	/images/products/sanwa-silent-solid-yellow.jpg	\N	47
+19	11	/images/products/crown-all-clear-royal-blue.png	\N	48
+19	3	/images/products/crown-all-clear-green.png	\N	49
+19	10	/images/products/crown-all-clear-orange.png	\N	50
+19	13	/images/products/crown-all-clear-violet.png	\N	51
+19	5	/images/products/crown-all-clear-red.png	\N	52
+19	1	/images/products/crown-all-clear-black.png	\N	53
+19	15	/images/products/crown-all-clear-purple.png	\N	54
+19	6	/images/products/crown-all-clear-white.png	\N	55
+19	7	/images/products/crown-all-clear-yellow.png	\N	56
+20	\N	/images/products/crown-24mm-solid-all.jpg	\N	57
+20	1	/images/products/crown-24mm-solid-black.jpg	\N	58
+20	6	/images/products/crown-24mm-solid-white.jpg	\N	59
+20	5	/images/products/crown-24mm-solid-red.jpg	\N	60
+20	7	/images/products/crown-24mm-solid-yellow.jpg	\N	61
+20	2	/images/products/crown-24mm-solid-blue.jpg	\N	62
+21	1	/images/products/hayabusa-24mm-matte-black.png	\N	63
+21	2	/images/products/hayabusa-24mm-matte-blue.png	\N	64
+22	\N	/images/products/sanwa-solid-all.jpg	\N	65
+22	1	/images/products/sanwa-solid-black.png	\N	66
+22	2	/images/products/sanwa-solid-blue.png	\N	67
+22	8	/images/products/sanwa-solid-dark-blue.png	\N	68
+22	3	/images/products/sanwa-solid-green.png	\N	69
+22	10	/images/products/sanwa-solid-orange.png	\N	70
+22	4	/images/products/sanwa-solid-pink.png	\N	71
+22	5	/images/products/sanwa-solid-red.png	\N	72
+22	11	/images/products/sanwa-solid-royal-blue.png	\N	73
+22	12	/images/products/sanwa-solid-vermillion.png	\N	74
+22	13	/images/products/sanwa-solid-violet.png	\N	75
+22	6	/images/products/sanwa-solid-white.png	\N	76
+22	7	/images/products/sanwa-solid-yellow.png	\N	77
+23	\N	/images/products/seimitsu-keikou-all.png	\N	78
+23	4	/images/products/seimitsu-keikou-pink.png	\N	79
+23	10	/images/products/seimitsu-keikou-orange.png	\N	80
+23	14	/images/products/seimitsu-keikou-lime-green.png	\N	81
+23	3	/images/products/seimitsu-keikou-green.png	\N	82
+24	\N	/images/products/lfz-30mm-button.png	\N	83
+25	\N	/images/products/lfz-shirt.png	\N	84
+26	\N	/images/products/3s-breaking-tee.png	\N	85
+26	\N	/images/products/3s-breaking-tee-back.png	\N	86
+27	\N	/images/products/sanwa-hoodie.jpg	\N	87
+27	\N	/images/products/sanwa-hoodie-back.jpg	\N	88
+28	\N	/images/products/blackout-1.png	\N	89
+28	\N	/images/products/blackout-2.png	\N	90
+29	\N	/images/products/aegis.jpg	\N	91
+29	\N	/images/products/aegis-2.jpg	\N	92
+30	\N	/images/products/sanwa-silent-clear-all.jpg	\N	93
+30	1	/images/products/sanwa-silent-clear-black.jpg	\N	94
+30	2	/images/products/sanwa-silent-clear-blue.jpg	\N	95
+30	3	/images/products/sanwa-silent-clear-green.jpg	\N	96
+30	5	/images/products/sanwa-silent-clear-red.jpg	\N	97
+30	7	/images/products/sanwa-silent-clear-yellow.jpg	\N	98
 \.
 
 
@@ -675,6 +780,7 @@ COPY public.products ("productId", name, price, description, "categoryId", "bran
 27	SANWA DENSHI ELEPHANT BUTTON MASHER PULLOVER HOODIE	4500	If you've purchased a fight stick in the past few years, chances are they are stocked with Sanwa Denshi parts. The largest parts maker for fight sticks in the world. Their iconic elephant logo is seen here mashing their famous OBSF30 pushbuttons. Like an elephant, this thick skin will keep you warm.	5	10
 28	SPLITFRAME FS TRANSPORTER: BLACKOUT EDITION	13000	The first thing you'll notice when you see SPLITFRAME LLC's latest fight stick bag creation is PREMIUM quality.  At every measurement, the BLACKOUT Edition is an upgrade from all it's predecessors. There are bags out on the market using similar materials that are 50-75% more in cost, but do not live up to the detailed standards here. This bag was made to impress, both visually and functionally.	6	10
 29	Qanba Aegis Stick Bag	7000	The ultimate Dragon joystick travel backpack. Main joystick storage layer with reinforced stick guard.	6	6
+30	Sanwa Denshi (30mm) Clear SILENT Pushbutton (OBSCS30)	600	Sanwa Denshi Co takes it's Silent Series a step further and implements their quiet touch pushbuttons in their popular CLEAR series, which was first unveiled at our booth at SCR 2013 (www.socalregionals.com).  Pretty much every Sanwa Denshi pushbuttons sell quite well for the market, but ever since the Silent Buttons were released, they have really made a big impact on gamers upgrading their buttons.	1	3
 \.
 
 
@@ -683,6 +789,61 @@ COPY public.products ("productId", name, price, description, "categoryId", "bran
 --
 
 COPY public."productsColors" ("productId", "colorId") FROM stdin;
+9	1
+9	6
+15	1
+15	3
+15	5
+15	6
+18	1
+18	2
+18	8
+18	9
+18	3
+18	10
+18	4
+18	5
+18	11
+18	12
+18	13
+18	7
+19	11
+19	3
+19	10
+19	13
+19	5
+19	1
+19	15
+19	6
+19	7
+20	1
+20	6
+20	5
+20	7
+20	2
+21	1
+21	2
+22	1
+22	2
+22	8
+22	3
+22	10
+22	4
+22	5
+22	11
+22	12
+22	13
+22	6
+22	7
+23	4
+23	10
+23	14
+23	3
+30	1
+30	2
+30	3
+30	5
+30	7
 \.
 
 
@@ -691,6 +852,24 @@ COPY public."productsColors" ("productId", "colorId") FROM stdin;
 --
 
 COPY public."productsSizes" ("productId", "sizeId") FROM stdin;
+25	1
+25	2
+25	3
+25	4
+25	5
+25	6
+26	1
+26	2
+26	3
+26	4
+26	5
+26	6
+27	1
+27	2
+27	3
+27	4
+27	5
+27	6
 \.
 
 
@@ -748,7 +927,7 @@ SELECT pg_catalog.setval('public.categories_id_seq', 6, true);
 -- Name: colors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.colors_id_seq', 7, true);
+SELECT pg_catalog.setval('public.colors_id_seq', 15, true);
 
 
 --
@@ -762,7 +941,7 @@ SELECT pg_catalog.setval('public."orders_orderId_seq"', 12, true);
 -- Name: productImages_productImageId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."productImages_productImageId_seq"', 1, false);
+SELECT pg_catalog.setval('public."productImages_productImageId_seq"', 98, true);
 
 
 --
@@ -776,7 +955,7 @@ SELECT pg_catalog.setval('public."productStyle_styleId_seq"', 1, false);
 -- Name: products_productId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."products_productId_seq"', 29, true);
+SELECT pg_catalog.setval('public."products_productId_seq"', 30, true);
 
 
 --
