@@ -21,12 +21,14 @@ app.get('/api/health-check', (req, res, next) => {
 
 app.get('/api/products', (req, res, next) => {
   const sql = `
-    SELECT "image",
-           "name",
+    SELECT "name",
            "price",
-           "productId",
-           "shortDescription"
+           "products"."productId",
+           "singleImage"."imagePath"
       FROM "products"
+      JOIN (
+        SELECT DISTINCT ON ("productId") * FROM "productImages"
+      ) AS "singleImage" USING ("productId");
   `;
   db.query(sql)
     .then(result => {
