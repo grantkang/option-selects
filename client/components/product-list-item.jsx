@@ -12,7 +12,6 @@ export default class ProductListItem extends React.Component {
     const name = this.props.name;
     const price = `$${(this.props.price / 100).toFixed(2)}`;
     const imagePath = this.props.imagePath;
-    const description = this.props.description;
     const cardClass = this.state.isHovered ? 'product-list-item-card card pointer' : 'product-list-item-card card pointer m-3';
 
     return (
@@ -23,8 +22,7 @@ export default class ProductListItem extends React.Component {
           <img className="card-img-top card-img my-3" src={imagePath} alt="Product Image" />
           <div className="card-body">
             <h5 className="card-title">{name}</h5>
-            <p className="card-text"><small className="text-muted">{price}</small></p>
-            <p className="card-text">{description}</p>
+            <p className="card-text">{price}</p>
           </div>
         </div>
       </div>

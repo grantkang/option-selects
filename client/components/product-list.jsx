@@ -20,8 +20,7 @@ export default function ProductList(props) {
         key={product.productId}
         name={product.name}
         price={product.price}
-        imagePath={product.image}
-        description={product.shortDescription}
+        imagePath={product.imagePath}
         onClick={() => history.push(`/products/${product.productId}`)}
       />
     );
