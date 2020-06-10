@@ -210,6 +210,33 @@ app.post('/api/orders', (req, res, next) => {
     });
 });
 
+app.get('/api/nav', (req, res, next) => {
+  const sql = `
+    SELECT * FROM "categories"
+  `;
+  db.query(sql)
+    .then(result => {
+      const categories = result.rows;
+      if (categories.length === 0) {
+        throw new ClientError('No categories available!', 404);
+      }
+      const sql = `
+        SELECT * FROM "brands"
+      `;
+      return db.query(sql)
+        .then(result => {
+          const brands = result.rows;
+          if (brands.length === 0) {
+            throw new ClientError('No brands available!', 404);
+          }
+          res.status(200).json({ categories, brands });
+        });
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
