@@ -212,7 +212,7 @@ app.post('/api/orders', (req, res, next) => {
 
 app.get('/api/nav', (req, res, next) => {
   const sql = `
-    SELECT * FROM "categories"
+    SELECT "categoryId" AS "id", "name" FROM "categories"
   `;
   db.query(sql)
     .then(result => {
@@ -221,7 +221,7 @@ app.get('/api/nav', (req, res, next) => {
         throw new ClientError('No categories available!', 404);
       }
       const sql = `
-        SELECT * FROM "brands"
+        SELECT "brandId" AS "id", "name" FROM "brands"
       `;
       return db.query(sql)
         .then(result => {
