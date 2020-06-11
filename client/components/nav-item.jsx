@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Grow from '@material-ui/core/Grow';
-import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Typography from '@material-ui/core/Typography';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { useHistory } from 'react-router-dom';
+import Collapse from '@material-ui/core/Collapse';
+import Icon from '@material-ui/core/Icon';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,9 +18,15 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2),
     minWidth: '200px'
   },
-
+  collapse: {
+    position: 'absolute',
+    top: '100%'
+  },
   fullHeight: {
     ...theme.mixins.toolbar
+  },
+  white: {
+    color: '#ffffff'
   }
 }));
 
@@ -41,7 +45,6 @@ export default function NavItem(props) {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
     setOpen(false);
   };
 
@@ -67,33 +70,26 @@ export default function NavItem(props) {
   });
 
   return (
-    <div>
+    <div className={classes.root}>
       <Button
-        className={classes.fullHeight}
+        className={`${classes.fullHeight} ${classes.white}`}
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
       >
         <Typography variant="h6">{data.name}</Typography>
-        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+        <Icon>{open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
       </Button>
-      <Popper open={open} anchorEl={anchorRef.current} role={undefined} placement='bottom-start' transition disablePortal modifiers={{ flip: { enabled: false }, preventOverflow: { enabled: false } }}>
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{ transformOrigin: 'center top' }}
-          >
-            <Paper square className={classes.paper}>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                  {renderedChildren}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
+      <Collapse in={open} className={classes.collapse}>
+        <Paper square className={classes.paper}>
+          <ClickAwayListener onClickAway={handleClose}>
+            <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+              {renderedChildren}
+            </MenuList>
+          </ClickAwayListener>
+        </Paper>
+      </Collapse>
     </div>
   );
 }
