@@ -11,20 +11,27 @@ import CartSummary from './cart-summary';
 import CheckoutForm from './checkout-form';
 import NotificationModal from './notification-modal';
 import AppContext from '../lib/context';
-import { createMuiTheme, ThemeProvider, Container } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider, Container, responsiveFontSizes } from '@material-ui/core';
 
-const appTitle = 'Wicked Sales';
+const appTitle = 'Option Selects';
 
-const defaultTheme = createMuiTheme({
+let defaultTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#232F3E'
+      main: '#1b457a',
+      contrastText: '#fff'
     },
     secondary: {
-      main: '#F1C963'
+      main: '#9F1D1F',
+      contrastText: '#fff'
+    },
+    background: {
+      main: '#F8F9FA'
     }
   }
 });
+
+defaultTheme = responsiveFontSizes(defaultTheme);
 
 export default class App extends React.Component {
   constructor(props) {
@@ -125,8 +132,7 @@ export default class App extends React.Component {
         <ThemeProvider theme={defaultTheme}>
           {modal.isOpen ? <NotificationModal modal={modal} close={this.contextValue.closeModal} /> : null}
           <Router>
-            <Header
-              cartItemCount={this.state.cart.length} />
+            <Header cartItemCount={this.state.cart.length}/>
             <div className="p-4 bg-light">
               <Container>
                 <Switch>
