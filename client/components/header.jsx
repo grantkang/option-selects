@@ -1,21 +1,17 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import { Toolbar, makeStyles, Container, Badge } from '@material-ui/core';
-import NavItem from './nav-item';
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Badge from '@material-ui/core/Badge';
+import Container from '@material-ui/core/Container';
+import NavBar from './nav-bar';
 
 const useStyles = makeStyles(theme => ({
   root: {
-  },
-  defaultBackground: {
-    background: theme.palette.background.main
-  },
-  secondaryToolbar: {
-    background: theme.palette.secondary.main,
-    zIndex: 1
   },
   midSection: {
     flexGrow: 1
@@ -47,14 +43,12 @@ const useStyles = makeStyles(theme => ({
       cursor: 'pointer'
     }
   },
-  menuItems: {
-    padding: theme.spacing(1)
-  },
   mobile: {
     display: 'none',
     [theme.breakpoints.down('xs')]: {
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'end'
     }
   },
   desktop: {
@@ -71,31 +65,13 @@ export default function Header(props) {
   const history = useHistory();
   const cartItemCount = props.cartItemCount;
   const cartItemCountText = cartItemCount === 1 ? '1 item' : `${cartItemCount} items`;
-  const [nav, setNav] = useState([]);
-
-  useEffect(() => {
-    fetch('/api/nav')
-      .then(response => response.json())
-      .then(data => {
-        const navItems = [];
-        for (const navItem in data) {
-          navItems.push(data[navItem].reduce((acc, child) => {
-            acc.children.push(child);
-            return acc;
-          }, { name: navItem, children: [] }));
-        }
-        setNav(navItems);
-      });
-  }, []);
-
-  const renderedDesktopNavItems = nav.map(navItem => <NavItem key={navItem.name} data={navItem} />);
 
   return (
     <Fragment>
       <AppBar position="static" className={classes.root}>
         <div>
           <Container>
-            <Toolbar>
+            <Toolbar disableGutters>
               <div className={classes.logoContainer}>
                 <img className={`${classes.logo} ${classes.clickable}`} src="/images/logo.png" alt="logo" onClick={() => history.push('/')} />
               </div>
@@ -108,22 +84,16 @@ export default function Header(props) {
               </div>
               <div className={classes.mobile}>
                 <IconButton area-label="cart" onClick={() => history.push('/cart')}>
-                  <Badge badgeContent={cartItemCount} color="secondary">
-                    <ShoppingCartIcon className={classes.constrastText} />
+                  <Badge badgeContent={cartItemCount} color="secondary" showZero>
+                    <ShoppingCartIcon className={classes.contrastText} />
                   </Badge>
                 </IconButton>
               </div>
             </Toolbar>
           </Container>
         </div>
-        <div className={classes.secondaryToolbar}>
-          <Container>
-            <Toolbar>
-              <div className={classes.logoOffset} />
-              {renderedDesktopNavItems}
-            </Toolbar>
-          </Container>
-        </div>
+        <NavBar logoOffsetClass={classes.logoOffset} />
+
       </AppBar>
     </Fragment>
   );

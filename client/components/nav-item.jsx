@@ -12,21 +12,36 @@ import Icon from '@material-ui/core/Icon';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex'
+    display: 'flex',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column'
+    }
   },
   paper: {
     marginRight: theme.spacing(2),
-    minWidth: '200px'
+    minWidth: '200px',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    }
   },
   collapse: {
-    position: 'absolute',
-    top: '100%'
+    top: '100%',
+    [theme.breakpoints.up('sm')]: {
+      position: 'absolute'
+    }
   },
   fullHeight: {
     ...theme.mixins.toolbar
   },
   white: {
     color: '#ffffff'
+  },
+  button: {
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between'
+    }
   }
 }));
 
@@ -72,7 +87,7 @@ export default function NavItem(props) {
   return (
     <div className={classes.root}>
       <Button
-        className={`${classes.fullHeight} ${classes.white}`}
+        className={`${classes.fullHeight} ${classes.white} ${classes.button}`}
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
         aria-haspopup="true"
