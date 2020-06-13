@@ -12,7 +12,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    background: theme.palette.secondary.main,
+    background: theme.palette.primary.main,
     zIndex: 1
   },
   mobile: {
@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       alignItems: 'center'
     }
+  },
+  innerBackground: {
+    background: theme.palette.primary.dark
   },
   contrastText: {
     color: theme.palette.primary.contrastText
@@ -76,12 +79,12 @@ export default function NavBar(props) {
   return (
     <div className={classes.root}>
       <Container>
-        <Toolbar className={classes.desktop} disableGutters>
+        <Toolbar className={`${classes.desktop} ${classes.innerBackground}`} disableGutters>
           <div className={logoOffsetClass} />
           {renderedNavItems}
         </Toolbar>
       </Container>
-      <Toolbar className={classes.mobile} disableGutters>
+      <Toolbar className={`${classes.mobile} ${classes.innerBackground}`} disableGutters>
         <Button className={`${classes.menuButton} ${classes.contrastText} ${classes.fullHeight}`} onClick={handleToggle}>
           <Icon>menu</Icon>
           <Typography variant="h6">Menu</Typography>

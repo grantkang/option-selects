@@ -25,18 +25,17 @@ const useStyles = makeStyles(theme => ({
       width: '115px'
     },
     [theme.breakpoints.up('sm')]: {
-      width: '140px'
+      width: '130px'
     }
   },
   logo: {
     position: 'absolute',
-    top: '-30px',
+    top: '-35px',
     width: '100%',
     zIndex: 2
   },
   logoOffset: {
     width: '140px'
-
   },
   clickable: {
     '&:hover': {

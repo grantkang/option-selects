@@ -18,7 +18,9 @@ const appTitle = 'Option Selects';
 let defaultTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#1b457a',
+      main: '#181717',
+      light: '#3C3A3B',
+      dark: '#100F0F',
       contrastText: '#fff'
     },
     secondary: {
