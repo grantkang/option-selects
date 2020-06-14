@@ -45,15 +45,16 @@ app.get('/api/products/:productId', (req, res, next) => {
   if (!parseInt(productId, 10)) {
     return next(new ClientError('"productId" must be a positive integer', 400));
   }
-
   const sql = `
-    SELECT "image",
-           "longDescription",
-           "name",
-           "price",
-           "productId",
-           "shortDescription"
-      FROM "products"
+    SELECT "p"."productId",
+           "p"."name",
+           "p"."price",
+           "p"."description",
+           "c"."name" AS "category",
+           "b"."name" AS "brand"
+      FROM "products" AS "p"
+      JOIN "brands" AS "b" USING("brandId")
+      JOIN "categories" AS "c" USING("categoryId")
      WHERE "productId" = $1
   `;
   const params = [productId];
@@ -61,10 +62,28 @@ app.get('/api/products/:productId', (req, res, next) => {
     .then(result => {
       const product = result.rows[0];
       if (!product) {
-        next(new ClientError(`Cannot find product with "productId" ${productId}`, 404));
-      } else {
-        res.status(200).json(product);
+        throw new ClientError(`Cannot find product with "productId" ${productId}`, 404);
       }
+      const sql = `
+        SELECT
+        JSON_AGG(DISTINCT "colors") "colors",
+        JSON_AGG(DISTINCT "productImages") "images",
+        JSON_AGG(DISTINCT "sizes") "sizes"
+        FROM "products"
+        LEFT JOIN "productsColors" USING("productId")
+        LEFT JOIN "colors" USING ("colorId")
+        LEFT JOIN "productImages" USING("productId")
+        LEFT JOIN "productsSizes" USING("productId")
+        LEFT JOIN "sizes" USING ("sizeId")
+        GROUP BY "productId"
+        HAVING "productId" = $1
+      `;
+      const params = [productId];
+      return db.query(sql, params)
+        .then(result => {
+          const aggregates = result.rows[0];
+          res.status(200).json({ ...product, ...aggregates });
+        });
     })
     .catch(err => {
       next(err);
