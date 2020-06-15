@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Switch
 } from 'react-router-dom';
 import Header from './header';
-import ProductList from './product-list';
+import Home from './home';
 import ProductDetails from './product-details';
 import CartSummary from './cart-summary';
 import CheckoutForm from './checkout-form';
 import NotificationModal from './notification-modal';
 import AppContext from '../lib/context';
-import { createMuiTheme, ThemeProvider, Container, responsiveFontSizes } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider, responsiveFontSizes, makeStyles, useTheme } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const appTitle = 'Option Selects';
 
@@ -28,68 +31,60 @@ let defaultTheme = createMuiTheme({
       contrastText: '#fff'
     },
     background: {
-      main: '#F8F9FA'
+      main: '#f8f9fa'
     }
   }
+
 });
 
 defaultTheme = responsiveFontSizes(defaultTheme);
-
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      view: {
-        name: 'catalog',
-        params: {}
-      },
-      cart: [],
-      modal: {
-        isOpen: true,
-        header: 'Hello World',
-        body: `Welcome to ${appTitle}! This is just a demo so it is not a real store. Please do not use your real info!`,
-        options: [{ label: 'OK, got it!' }]
-      }
-    };
-    this.contextValue = {
-      addToCart: this.addToCart.bind(this),
-      placeOrder: this.placeOrder.bind(this),
-      closeModal: this.closeModal.bind(this),
-      openModal: this.openModal.bind(this),
-      getApplicationTitle: () => { return appTitle; },
-      getCart: () => { return this.state.cart.slice(); }
-    };
+const useStyles = makeStyles(theme => ({
+  root: {
+    background: '#f8f9fa'
   }
+}));
 
-  componentDidMount() {
-    this.getCartItems();
-  }
+export default function App(props) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.up('sm'));
+  const classes = useStyles();
+  const [cart, setCart] = useState([]);
+  const [modal, setModal] = useState({
+    isOpen: true,
+    header: 'Hello World',
+    body: `Welcome to ${appTitle}! This is just a demo so it is not a real store. Please do not use your real info!`,
+    options: [{ label: 'OK, got it!' }]
+  });
 
-  closeModal() {
-    const newState = Object.assign({}, this.state.modal);
+  useEffect(() => {
+    getCartItems();
+  }, []);
+
+  const closeModal = () => {
+    const newState = Object.assign({}, modal);
     newState.isOpen = false;
-    this.setState({ modal: newState });
-  }
+    setModal(newState);
+  };
 
-  openModal(header, body, options) {
+  const openModal = (header, body, options) => {
     const newState = {
       isOpen: true,
       header: header,
       body: body,
       options: options
     };
-    this.setState({ modal: newState });
-  }
+    setModal(newState);
+  };
 
-  getCartItems() {
+  const getCartItems = () => {
     fetch('/api/cart')
       .then(response => response.json())
       .then(cart => {
-        this.setState({ cart: cart });
+        setCart(cart);
       });
-  }
+  };
 
-  addToCart(product) {
+  const addToCart = product => {
     const req = {
       method: 'POST',
       headers: {
@@ -102,11 +97,11 @@ export default class App extends React.Component {
       .then(cartItem => {
         const newCart = this.state.cart.slice();
         newCart.push(cartItem);
-        this.setState({ cart: newCart });
+        setCart(newCart);
       });
-  }
+  };
 
-  placeOrder(orderSubmission) {
+  const placeOrder = orderSubmission => {
     const req = {
       method: 'POST',
       headers: {
@@ -117,45 +112,46 @@ export default class App extends React.Component {
     fetch('/api/orders', req)
       .then(response => response.json())
       .then(processedOrder => {
-        this.setState({
-          cart: [],
-          view: {
-            name: 'catalog',
-            params: {}
-          }
-        });
+        setCart([]);
       });
-  }
+  };
 
-  render() {
-    const modal = Object.assign({}, this.state.modal);
-    return (
-      <AppContext.Provider value={this.contextValue}>
-        <ThemeProvider theme={defaultTheme}>
-          {modal.isOpen ? <NotificationModal modal={modal} close={this.contextValue.closeModal} /> : null}
-          <Router>
-            <Header cartItemCount={this.state.cart.length}/>
-            <div className="p-4 bg-light">
-              <Container>
-                <Switch>
-                  <Route exact path="/">
-                    <ProductList />
-                  </Route>
-                  <Route path="/products/:id">
-                    <ProductDetails />
-                  </Route>
-                  <Route path="/cart">
-                    <CartSummary />
-                  </Route>
-                  <Route path="/checkout">
-                    <CheckoutForm />
-                  </Route>
-                </Switch>
-              </Container>
-            </div>
-          </Router>
-        </ThemeProvider>
-      </AppContext.Provider>
-    );
-  }
+  const contextValue = {
+    addToCart,
+    placeOrder,
+    closeModal,
+    openModal,
+    getApplicationTitle: () => { return appTitle; },
+    getCart: () => { return cart.slice(); }
+  };
+
+  return (
+    <AppContext.Provider value={contextValue}>
+      <ThemeProvider theme={defaultTheme}>
+        {modal.isOpen ? <NotificationModal modal={modal} close={contextValue.closeModal} /> : null}
+        <Router>
+          <Header cartItemCount={cart.length}/>
+          <div className={classes.root}>
+            <Container disableGutters={!isMobile}>
+              <Switch>
+                <Route exact path="/">
+                  <Home />
+                </Route>
+                <Route path="/products/:id">
+                  <ProductDetails />
+                </Route>
+                <Route path="/cart">
+                  <CartSummary />
+                </Route>
+                <Route path="/checkout">
+                  <CheckoutForm />
+                </Route>
+              </Switch>
+            </Container>
+          </div>
+        </Router>
+      </ThemeProvider>
+    </AppContext.Provider>
+  );
+
 }
