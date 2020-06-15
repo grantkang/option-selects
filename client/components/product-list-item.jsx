@@ -1,31 +1,58 @@
 import React from 'react';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
-export default class ProductListItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isHovered: false
-    };
+const useStyles = makeStyles(theme => ({
+  root: {
+
+  },
+  card: {
+    height: '100%',
+    '&:hover': {
+      cursor: 'pointer'
+    },
+    '&:hover $cardImage': {
+      opacity: '.5'
+    }
+  },
+  cardImage: {
+    transition: 'opacity',
+    transitionDuration: '.25s',
+    transitionTimingFunction: 'linear',
+    objectFit: 'scale-down',
+    padding: theme.spacing(2)
   }
+}));
 
-  render() {
-    const name = this.props.name;
-    const price = `$${(this.props.price / 100).toFixed(2)}`;
-    const imagePath = this.props.imagePath;
-    const cardClass = this.state.isHovered ? 'product-list-item-card card pointer' : 'product-list-item-card card pointer m-3';
+export default function ProductListItem(props) {
+  const classes = useStyles();
+  const name = props.name;
+  const price = `$${(props.price / 100).toFixed(2)}`;
+  const imagePath = props.imagePath;
 
-    return (
-      <div className="col-xl-4 col-md-6 col-sm-12 my-4"
-        onMouseEnter={() => this.setState({ isHovered: true })}
-        onMouseLeave={() => this.setState({ isHovered: false })}>
-        <div className={cardClass} onClick={this.props.onClick}>
-          <img className="card-img-top card-img my-3" src={imagePath} alt="Product Image" />
-          <div className="card-body">
-            <h5 className="card-title">{name}</h5>
-            <p className="card-text">{price}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  return (
+    <Grid className={classes.root} item xl={4} md={6} sm={12}>
+      <Card className={classes.card} onClick={props.onClick}>
+        <CardActionArea>
+          <CardMedia
+            className={classes.cardImage}
+            component="img"
+            alt="Product Image"
+            height="300"
+            image={imagePath}
+          />
+          <CardContent>
+            <Typography variant="h4">{name}</Typography>
+            <Typography variant="h6">{price}</Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Grid>
+  );
+
 }
