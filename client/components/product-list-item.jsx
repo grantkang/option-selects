@@ -36,7 +36,7 @@ export default function ProductListItem(props) {
   const imagePath = props.imagePath;
 
   return (
-    <Grid className={classes.root} item xl={4} md={6} sm={12}>
+    <Grid className={classes.root} item lg={4} sm={6} xs={12}>
       <Card className={classes.card} onClick={props.onClick}>
         <CardActionArea>
           <CardMedia
