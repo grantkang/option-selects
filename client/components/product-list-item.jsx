@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,25 +31,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ProductListItem(props) {
+  const history = useHistory();
   const classes = useStyles();
-  const name = props.name;
-  const price = `$${(props.price / 100).toFixed(2)}`;
-  const imagePath = props.imagePath;
+  const product = props.product;
 
   return (
     <Grid className={classes.root} item lg={4} sm={6} xs={12}>
-      <Card className={classes.card} onClick={props.onClick}>
+      <Card className={classes.card} onClick={() => history.push(`/products/${product.id}`)}>
         <CardActionArea>
           <CardMedia
             className={classes.cardImage}
             component="img"
             alt="Product Image"
             height="300"
-            image={imagePath}
+            image={product.imagePath}
           />
           <CardContent>
-            <Typography variant="h4">{name}</Typography>
-            <Typography variant="h6">{price}</Typography>
+            <Typography variant="h4">{product.name}</Typography>
+            <Typography variant="h6">{`$${(product.price / 100).toFixed(2)}`}</Typography>
           </CardContent>
         </CardActionArea>
       </Card>

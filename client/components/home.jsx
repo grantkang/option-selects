@@ -1,8 +1,28 @@
 import ProductList from './product-list';
 import Carousel from './carousel';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import ProductListItem from './product-list-item';
 
 export default function Home(props) {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then(response => response.json())
+      .then(products => {
+        setProducts(products);
+      });
+  }, []);
+
+  const productListItems = products.map(product => {
+    return (
+      <ProductListItem
+        key={product.productId}
+        product={Object.assign({}, product)}
+      />
+    );
+  });
+
   const carouselItems = [
     {
       imagePath: '/images/carousel/slideshow_1.jpg',
@@ -21,7 +41,9 @@ export default function Home(props) {
   return (
     <Fragment>
       <Carousel items={carouselItems}/>
-      <ProductList />
+      <ProductList>
+        {productListItems}
+      </ProductList>
     </Fragment>
 
   );
