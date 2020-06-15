@@ -23,7 +23,7 @@ app.get('/api/brands/:brandId', (req, res, next) => {
   const { brandId } = req.params;
 
   if (!parseInt(brandId, 10)) {
-    return next(new ClientError('"productId" must be a positive integer', 400));
+    return next(new ClientError('"brandId" must be a positive integer', 400));
   }
 
   const sql = `
@@ -53,6 +53,47 @@ app.get('/api/brands/:brandId', (req, res, next) => {
         .then(result => {
           brand.products = result.rows;
           res.status(200).json(brand);
+        });
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+app.get('/api/categories/:categoryId', (req, res, next) => {
+  const { categoryId } = req.params;
+
+  if (!parseInt(categoryId, 10)) {
+    return next(new ClientError('"categoryId" must be a positive integer', 400));
+  }
+
+  const sql = `
+    SELECT * FROM "categories"
+     WHERE "categoryId" = $1
+  `;
+  const params = [categoryId];
+  db.query(sql, params)
+    .then(result => {
+      const category = result.rows[0];
+      if (!category) {
+        throw new ClientError(`Cannot find category with "categoryId" ${categoryId}`, 404);
+      }
+      const sql = `
+        SELECT "name",
+              "price",
+              "products"."productId",
+              "singleImage"."imagePath"
+          FROM "products"
+          JOIN (
+            SELECT DISTINCT ON ("productId") * FROM "productImages"
+          ) AS "singleImage" USING ("productId")
+        WHERE "categoryId" = $1;
+       `;
+      const params = [categoryId];
+      return db.query(sql, params)
+        .then(result => {
+          category.products = result.rows;
+          res.status(200).json(category);
         });
     })
     .catch(err => {
