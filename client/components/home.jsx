@@ -2,9 +2,27 @@ import ProductList from './product-list';
 import Carousel from './carousel';
 import React, { Fragment, useEffect, useState } from 'react';
 import ProductListItem from './product-list-item';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(4, 0)
+  },
+  paper: {
+    display: 'inline-block',
+    padding: theme.spacing(1, 2, 1, 4),
+    background: theme.palette.secondary.main
+  },
+  header: {
+    color: theme.palette.secondary.contrastText
+  }
+}));
 
 export default function Home(props) {
   const [products, setProducts] = useState([]);
+  const classes = useStyles();
 
   useEffect(() => {
     fetch('/api/products')
@@ -41,9 +59,14 @@ export default function Home(props) {
   return (
     <Fragment>
       <Carousel items={carouselItems}/>
-      <ProductList>
-        {productListItems}
-      </ProductList>
+      <div className={classes.root}>
+        <Paper square className={classes.paper}>
+          <Typography className={classes.header} noWrap variant="h5" component="span">{'ALL PRODUCTS'}</Typography>
+        </Paper>
+        <ProductList>
+          {productListItems}
+        </ProductList>
+      </div>
     </Fragment>
 
   );
