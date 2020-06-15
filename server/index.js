@@ -19,6 +19,47 @@ app.get('/api/health-check', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/brands/:brandId', (req, res, next) => {
+  const { brandId } = req.params;
+
+  if (!parseInt(brandId, 10)) {
+    return next(new ClientError('"productId" must be a positive integer', 400));
+  }
+
+  const sql = `
+    SELECT * FROM "brands"
+     WHERE "brandId" = $1
+  `;
+  const params = [brandId];
+  db.query(sql, params)
+    .then(result => {
+      const brand = result.rows[0];
+      if (!brand) {
+        throw new ClientError(`Cannot find brand with "brandId" ${brandId}`, 404);
+      }
+      const sql = `
+        SELECT "name",
+              "price",
+              "products"."productId",
+              "singleImage"."imagePath"
+          FROM "products"
+          JOIN (
+            SELECT DISTINCT ON ("productId") * FROM "productImages"
+          ) AS "singleImage" USING ("productId")
+        WHERE "brandId" = $1;
+       `;
+      const params = [brandId];
+      return db.query(sql, params)
+        .then(result => {
+          brand.products = result.rows;
+          res.status(200).json(brand);
+        });
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
 app.get('/api/products', (req, res, next) => {
   const sql = `
     SELECT "name",
