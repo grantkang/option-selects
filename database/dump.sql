@@ -569,6 +569,7 @@ COPY public.brands ("brandId", name) FROM stdin;
 11	IST MALL
 12	ETokki
 13	FullStack
+14	Brook
 \.
 
 
@@ -599,6 +600,7 @@ COPY public.categories ("categoryId", name) FROM stdin;
 4	Hitbox
 5	Apparel
 6	Stick Bag
+7	Accessories
 \.
 
 
@@ -735,6 +737,19 @@ COPY public."productImages" ("productId", "colorId", "imagePath", "styleId", "pr
 30	3	/images/products/sanwa-silent-clear-green.jpg	\N	96
 30	5	/images/products/sanwa-silent-clear-red.jpg	\N	97
 30	7	/images/products/sanwa-silent-clear-yellow.jpg	\N	98
+31	1	/images/products/taeyoung-low-black.png	\N	99
+31	3	/images/products/taeyoung-low-green.png	\N	100
+31	5	/images/products/taeyoung-low-red.png	\N	101
+31	6	/images/products/taeyoung-low-white.png	\N	102
+33	\N	/images/products/brook-ps4-neo-geo.png	\N	103
+33	\N	/images/products/brook-ps4-neo-geo-2.png	\N	104
+32	\N	/images/products/brook-wireless-board.png	\N	105
+32	\N	/images/products/brook-wireless-board-2.png	\N	106
+34	\N	/images/products/brook-retro-board.png	\N	107
+34	\N	/images/products/brook-retro-board-2.png	\N	108
+35	\N	/images/products/sanwa_square_gate.jpg	\N	109
+36	\N	/images/products/seimitsu_octo.jpg	\N	110
+37	\N	/images/products/qanba-door.png	\N	111
 \.
 
 
@@ -781,6 +796,13 @@ COPY public.products ("productId", name, price, description, "categoryId", "bran
 28	SPLITFRAME FS TRANSPORTER: BLACKOUT EDITION	13000	The first thing you'll notice when you see SPLITFRAME LLC's latest fight stick bag creation is PREMIUM quality.  At every measurement, the BLACKOUT Edition is an upgrade from all it's predecessors. There are bags out on the market using similar materials that are 50-75% more in cost, but do not live up to the detailed standards here. This bag was made to impress, both visually and functionally.	6	10
 29	Qanba Aegis Stick Bag	7000	The ultimate Dragon joystick travel backpack. Main joystick storage layer with reinforced stick guard.	6	6
 30	Sanwa Denshi (30mm) Clear SILENT Pushbutton (OBSCS30)	600	Sanwa Denshi Co takes it's Silent Series a step further and implements their quiet touch pushbuttons in their popular CLEAR series, which was first unveiled at our booth at SCR 2013 (www.socalregionals.com).  Pretty much every Sanwa Denshi pushbuttons sell quite well for the market, but ever since the Silent Buttons were released, they have really made a big impact on gamers upgrading their buttons.	1	3
+31	Taeyoung Fanta Stick - Hemi - Low Collar	4000	While there have been many different Korean levers out there on the market, this particular one started it all. This lever would establish the design of what others would base on. After a brief period of being discontinued as the interest in Korean levers all around the world was rising, it's finally returned with not only in its standard form but also in a new format	2	12
+32	BROOK PS3 | PS4 | SWITCH | PC WIRELESS FIGHTING BOARD	8000	Brook is following up their PS3/4 Fighting Board with Audio and now adding Wireless capability to it, which is the only difference. This board also allows wired capability (with the use of a USB Type A to B cable) should you need to use it for various tournaments that may not allow the wireless capability	7	14
+33	BROOK PS3/PS4 to NEO•GEO Mini Super Converter	7000	Brook Super Converter series make new controllers compatible with retro consoles. This not only saves your money but also means that you can use the controllers you have grown accustomed to. Installation and use of the PS3/PS4 to NEOGEO mini controller Adapter is effortless.	7	14
+34	BROOK RETRO BOARD (NES | SNES | GC | Xbox | DC | TG16 | PS1 | PS2 | PS3 | PC)	7500	Brook's Universal Fighting Board covered the PS3 - PS4 - Xbox 360 - Xbox One - PC - WIIU and Switch, which is a lot of systems.  This though, leaves the void for the older systems that Brook did not focus on.  For the past few years, we and Jasen's Customs have been working with Brook on developing just that.	7	14
+35	Sanwa Denshi SQUARE Restrictor Gate	700	This gate is fully compatible with all of our HRAP sticks from Hori as well as our QanBa Q2 and Q4 sticks that uses Sanwa Denshi parts (not Seimitsu / SE parts).	3	14
+36	SEIMITSU Octogate (Restrictor Plate)	400	Convert your square gate to a 8 way octagonal gate.  This is an official Seimitsu product and fits their following joysticks: LS-33, LS-55, LS-56-01-AS, LS-56, LS-58, LS-60	4	14
+37	QANBA Obsidian USB Replacemnt DOOR (Original Product)	1500	One of the most common things about arcade sticks?  A broken door that houses the USB cable. What's more frustrating isn't so much the door is broken, but you simply can't buy a replacement even if you wanted to as some manufacturer's don't offer these parts to us.The good news, Qanba was very accommodating to allow us to stock these doors. This is the official stock door for the Qanba Obsidian.	6	14
 \.
 
 
@@ -844,6 +866,10 @@ COPY public."productsColors" ("productId", "colorId") FROM stdin;
 30	3
 30	5
 30	7
+31	1
+31	3
+31	5
+31	6
 \.
 
 
@@ -899,7 +925,7 @@ COPY public.sizes ("sizeId", name, abbreviation) FROM stdin;
 -- Name: brands_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.brands_id_seq', 13, true);
+SELECT pg_catalog.setval('public.brands_id_seq', 14, true);
 
 
 --
@@ -920,7 +946,7 @@ SELECT pg_catalog.setval('public."carts_cartId_seq"', 21, true);
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.categories_id_seq', 6, true);
+SELECT pg_catalog.setval('public.categories_id_seq', 7, true);
 
 
 --
@@ -941,7 +967,7 @@ SELECT pg_catalog.setval('public."orders_orderId_seq"', 12, true);
 -- Name: productImages_productImageId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."productImages_productImageId_seq"', 98, true);
+SELECT pg_catalog.setval('public."productImages_productImageId_seq"', 111, true);
 
 
 --
@@ -955,7 +981,7 @@ SELECT pg_catalog.setval('public."productStyle_styleId_seq"', 1, false);
 -- Name: products_productId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."products_productId_seq"', 30, true);
+SELECT pg_catalog.setval('public."products_productId_seq"', 37, true);
 
 
 --
