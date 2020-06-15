@@ -1,8 +1,3 @@
-.card-img {
-  object-fit: scale-down;
-  height: 300px;
-}
-
 .pointer:hover {
   cursor: pointer;
 }
@@ -20,8 +15,4 @@
 
 #modal-container {
   z-index: 2;
-}
-
-.product-list-item-card {
-  height: 100%;
 }
