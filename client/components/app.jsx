@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import Header from './header';
 import Home from './home';
+import Brands from './brands';
 import ProductDetails from './product-details';
 import CartSummary from './cart-summary';
 import CheckoutForm from './checkout-form';
@@ -13,8 +14,8 @@ import NotificationModal from './notification-modal';
 import AppContext from '../lib/context';
 import { createMuiTheme, ThemeProvider, responsiveFontSizes, makeStyles, useTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Categories from './categories';
 
 const appTitle = 'Option Selects';
 
@@ -139,6 +140,12 @@ export default function App(props) {
                 </Route>
                 <Route path="/products/:id">
                   <ProductDetails />
+                </Route>
+                <Route path="/brands/:id">
+                  <Brands />
+                </Route>
+                <Route path="/categories/:id">
+                  <Categories />
                 </Route>
                 <Route path="/cart">
                   <CartSummary />
