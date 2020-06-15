@@ -3,7 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { IconButton } from '@material-ui/core';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -12,19 +13,38 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     width: '100%'
   },
-  leftArrow: {
+  arrow: {
     position: 'absolute',
-    left: '0px',
-    color: theme.palette.secondary.main
+    opacity: '.5',
+    transition: 'opacity',
+    transitionDuration: '.25s',
+    transitionTimingFunction: 'linear',
+    '&:hover': {
+      opacity: '1'
+    }
   },
-  rightArrow: {
-    position: 'absolute',
-    right: '0px',
-    color: theme.palette.secondary.main
+  arrowLeft: {
+    left: '0px'
+  },
+  arrowRight: {
+    right: '0px'
   },
   image: {
     width: '100%',
     height: '100%'
+  },
+  progressDots: {
+    position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+    bottom: '0px',
+    width: '100%'
+  },
+  notActive: {
+    opacity: '0.5',
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }));
 
@@ -40,6 +60,10 @@ export default function Carousel(props) {
     let nextIndex = index + length;
     nextIndex += goRight ? 1 : -1;
     setIndex(nextIndex % length);
+  };
+
+  const handleProgressDotClick = newIndex => {
+    setIndex(newIndex);
   };
 
   useEffect(() => {
@@ -60,11 +84,25 @@ export default function Carousel(props) {
     setIndex(nextIndex % length);
   };
 
+  const renderProgressDots = items.map((item, i) => {
+    return (
+      <FiberManualRecordIcon
+        key={i}
+        className={index !== i ? classes.notActive : ''}
+        color="secondary"
+        onClick={() => handleProgressDotClick(i)}
+      />
+    );
+  });
+
   return (
     <div className={classes.root}>
-      <IconButton className={classes.leftArrow} onClick={() => handleArrowClick(false)}><ArrowBackIosIcon /></IconButton>
+      <IconButton className={`${classes.arrow} ${classes.arrowLeft}`} onClick={() => handleArrowClick(false)}><ArrowBackIosIcon color="secondary" fontSize="large"/></IconButton>
       <img className={classes.image} src={items[index].imagePath} onClick={() => history.push(items[index].url)}/>
-      <IconButton className={classes.rightArrow} onClick={() => handleArrowClick(true)}><ArrowForwardIosIcon /></IconButton>
+      <IconButton className={`${classes.arrow} ${classes.arrowRight}`} onClick={() => handleArrowClick(true)}><ArrowForwardIosIcon color="secondary" fontSize="large"/></IconButton>
+      <div className={classes.progressDots}>
+        {renderProgressDots}
+      </div>
     </div>
   );
 
