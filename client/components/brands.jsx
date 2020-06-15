@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     display: 'inline-block',
-    padding: theme.spacing(1, 3),
+    padding: theme.spacing(1, 2, 1, 4),
     background: theme.palette.secondary.main
   },
   header: {
@@ -46,11 +46,9 @@ export default function Brands(props) {
 
   return (
     <div className={classes.root}>
-
-      <Paper className={classes.paper}>
+      <Paper square className={classes.paper}>
         <Typography className={classes.header} noWrap variant="h3" component="span">{`ALL ${name} PRODUCTS`}</Typography>
       </Paper>
-
       <ProductList>
         {productListItems}
       </ProductList>
