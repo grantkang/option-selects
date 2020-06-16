@@ -21,6 +21,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const appTitle = 'Option Selects';
 
@@ -58,8 +59,13 @@ export default function App(props) {
   const [modal, setModal] = useState({
     isOpen: true,
     header: 'Hello World',
-    body: `Welcome to ${appTitle}! This is just a demo so it is not a real store. Please do not use your real info!`,
+    body: `Welcome to ${appTitle}! This is just a demo and not a real store. Please do not use your real info!`,
     options: [{ label: 'OK, got it!' }]
+  });
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: ''
   });
 
   useEffect(() => {
@@ -80,6 +86,20 @@ export default function App(props) {
       options: options
     };
     setModal(newState);
+  };
+
+  const openSnackbar = message => {
+    setSnackbar({
+      open: true,
+      message
+    });
+  };
+
+  const closeSnackbar = () => {
+    setSnackbar({
+      open: false,
+      message: ''
+    });
   };
 
   const getCartItems = () => {
@@ -104,6 +124,7 @@ export default function App(props) {
         const newCart = cart.slice();
         newCart.push(cartItem);
         setCart(newCart);
+        openSnackbar('Item added to cart!');
       });
   };
 
@@ -119,6 +140,7 @@ export default function App(props) {
       .then(response => response.json())
       .then(processedOrder => {
         setCart([]);
+        openModal('Psuedo Order Placed', 'Thanks for trying out the demo!', [{ label: 'Continue' }]);
       });
   };
 
@@ -127,6 +149,7 @@ export default function App(props) {
     placeOrder,
     closeModal,
     openModal,
+    openSnackbar,
     getApplicationTitle: () => { return appTitle; },
     getCart: () => { return cart.slice(); }
   };
@@ -137,9 +160,9 @@ export default function App(props) {
         <Dialog
           open={modal.isOpen}
           onClose={contextValue.closeModal}>
-          <DialogTitle id="alert-dialog-title">{modal.header}</DialogTitle>
+          <DialogTitle>{modal.header}</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+            <DialogContentText>
               {modal.body}
             </DialogContentText>
           </DialogContent>
@@ -151,6 +174,7 @@ export default function App(props) {
             })}
           </DialogActions>
         </Dialog>
+        <Snackbar open={snackbar.open} autoHideDuration={3000} message={snackbar.message} onClose={closeSnackbar}/>
         <Router>
           <Header cartItemCount={cart.length}/>
           <div className={classes.root}>
