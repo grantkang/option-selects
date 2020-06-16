@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 export default function ProductList(props) {
   const classes = useStyles();
   return (
-    <Grid container direction="row" justify="space-around" spacing={4} className={classes.root}>
+    <Grid container direction="row" justify="space-around" className={classes.root}>
       {props.children}
     </Grid>
   );

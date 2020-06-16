@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
-
+    padding: theme.spacing(2)
   },
   card: {
     height: '100%',
