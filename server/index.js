@@ -19,6 +19,64 @@ app.get('/api/health-check', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/fs220', (req, res, next) => {
+  const cartId = req.session.cartId;
+  if (!cartId) {
+    res.status(200).json({ '🤫': false });
+  } else {
+    const sql = `
+      SELECT "codeEnabled"
+        FROM "carts"
+       WHERE "cartId" = $1
+    `;
+    const params = [cartId];
+    db.query(sql, params)
+      .then(result => {
+        const cart = result.rows[0];
+        if (!cart) {
+          throw new ClientError(`cart with "cartId" = ${cartId} does not exist`, 400);
+        }
+        res.status(200).json({ '🤫': cart.codeEnabled });
+      })
+      .catch(err => next(err));
+  }
+});
+
+app.post('/api/fs220', (req, res, next) => {
+  const cartId = req.session.cartId;
+  if (!cartId) {
+    const sql = `
+      INSERT INTO "carts" ("cartId", "createdAt","codeEnabled")
+      VALUES (default, default, true)
+   RETURNING "cartId","codeEnabled"
+    `;
+    db.query(sql)
+      .then(result => {
+        const cart = result.rows[0];
+        req.session.cartId = cart.cartId;
+        res.status(200).json({ '🤫': cart.codeEnabled });
+      })
+      .catch(err => next(err));
+  } else {
+    const sql = `
+      UPDATE "carts"
+         SET "codeEnabled" = true
+       WHERE "cartId" = $1
+   RETURNING "codeEnabled"
+    `;
+    const params = [cartId];
+    db.query(sql, params)
+      .then(result => {
+        const cart = result.rows[0];
+        if (!cart) {
+          throw new ClientError(`cart with "cartId" = ${cartId} does not exist`, 400);
+        }
+        res.status(200).json({ '🤫': cart.codeEnabled });
+      })
+      .catch(err => next(err));
+  }
+});
+
 app.get('/api/brands/:brandId', (req, res, next) => {
   const { brandId } = req.params;
 
