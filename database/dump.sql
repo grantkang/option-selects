@@ -144,7 +144,9 @@ CREATE TABLE public."cartItems" (
     "cartItemId" integer NOT NULL,
     "cartId" integer NOT NULL,
     "productId" integer NOT NULL,
-    price integer NOT NULL
+    price integer NOT NULL,
+    "sizeId" integer,
+    "colorId" integer
 );
 
 
@@ -577,7 +579,7 @@ COPY public.brands ("brandId", name) FROM stdin;
 -- Data for Name: cartItems; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public."cartItems" ("cartItemId", "cartId", "productId", price) FROM stdin;
+COPY public."cartItems" ("cartItemId", "cartId", "productId", price, "sizeId", "colorId") FROM stdin;
 \.
 
 
@@ -802,7 +804,7 @@ COPY public.products ("productId", name, price, description, "categoryId", "bran
 34	BROOK RETRO BOARD (NES | SNES | GC | Xbox | DC | TG16 | PS1 | PS2 | PS3 | PC)	7500	Brook's Universal Fighting Board covered the PS3 - PS4 - Xbox 360 - Xbox One - PC - WIIU and Switch, which is a lot of systems.  This though, leaves the void for the older systems that Brook did not focus on.  For the past few years, we and Jasen's Customs have been working with Brook on developing just that.	7	14
 35	Sanwa Denshi SQUARE Restrictor Gate	700	This gate is fully compatible with all of our HRAP sticks from Hori as well as our QanBa Q2 and Q4 sticks that uses Sanwa Denshi parts (not Seimitsu / SE parts).	3	14
 36	SEIMITSU Octogate (Restrictor Plate)	400	Convert your square gate to a 8 way octagonal gate.  This is an official Seimitsu product and fits their following joysticks: LS-33, LS-55, LS-56-01-AS, LS-56, LS-58, LS-60	4	14
-37	QANBA Obsidian USB Replacemnt DOOR (Original Product)	1500	One of the most common things about arcade sticks?  A broken door that houses the USB cable. What's more frustrating isn't so much the door is broken, but you simply can't buy a replacement even if you wanted to as some manufacturer's don't offer these parts to us.The good news, Qanba was very accommodating to allow us to stock these doors. This is the official stock door for the Qanba Obsidian.	6	14
+37	QANBA Obsidian USB Replacemnt DOOR (Original Product)	1500	One of the most common things about arcade sticks?  A broken door that houses the USB cable. What's more frustrating isn't so much the door is broken, but you simply can't buy a replacement even if you wanted to as some manufacturer's don't offer these parts to us.The good news, Qanba was very accommodating to allow us to stock these doors. This is the official stock door for the Qanba Obsidian.	7	14
 \.
 
 
@@ -932,14 +934,14 @@ SELECT pg_catalog.setval('public.brands_id_seq', 14, true);
 -- Name: cartItems_cartItemId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 42, true);
+SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 77, true);
 
 
 --
 -- Name: carts_cartId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."carts_cartId_seq"', 21, true);
+SELECT pg_catalog.setval('public."carts_cartId_seq"', 34, true);
 
 
 --
