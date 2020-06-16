@@ -8,6 +8,8 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,6 +46,7 @@ export default function CheckoutForm(props) {
     shippingAddress: '',
     creditCardError: ''
   });
+  const [hasAgreed, setHasAgreed] = useState(false);
 
   const cart = context.getCart();
   const totalPrice = cart.reduce((acc, item) => {
@@ -54,6 +57,10 @@ export default function CheckoutForm(props) {
     const newState = Object.assign({}, state);
     newState[e.target.name] = e.target.value;
     setState(newState);
+  };
+
+  const handleCheckChange = e => {
+    setHasAgreed(e.target.checked);
   };
 
   const handleSubmit = e => {
@@ -116,6 +123,20 @@ export default function CheckoutForm(props) {
                 rows="5"
                 onChange={handleChange}
                 value={state.shippingAddress}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={hasAgreed}
+                    onChange={handleCheckChange}
+                    name="demoAgreement"
+                    color="secondary"
+                    required
+                  />
+                }
+                label="I understand that this is just a demo application and not a real store"
               />
             </Grid>
           </Grid>
