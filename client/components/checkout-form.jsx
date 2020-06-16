@@ -44,7 +44,9 @@ export default function CheckoutForm(props) {
     name: '',
     creditCard: '',
     shippingAddress: '',
-    creditCardError: ''
+    creditCardError: '',
+    emptyNameError: '',
+    emptyAddressError: ''
   });
   const [hasAgreed, setHasAgreed] = useState(false);
 
@@ -65,15 +67,20 @@ export default function CheckoutForm(props) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!creditCardIsValid()) {
-      const newState = Object.assign({}, state);
-      newState.creditCardError = 'Ex.) 1234-1234-1234-1234 or 1234123412341234';
+    const newState = Object.assign({}, state);
+    newState.name = state.name.trim();
+    newState.shippingAddress = state.shippingAddress.trim();
+    newState.creditCardError = creditCardIsValid() ? '' : 'Ex.) 1234-1234-1234-1234 or 1234123412341234';
+    newState.emptyNameError = newState.name.length > 0 ? '' : 'Please input you name';
+    newState.emptyAddressError = newState.shippingAddress.length > 0 ? '' : 'Please input your adddress';
+
+    if (!newState.creditCardError && !newState.emptyNameError && !newState.emptyAddressError) {
+      const orderInfo = Object.assign({}, state);
+      context.placeOrder(orderInfo);
+      history.push('/');
+    } else {
       setState(newState);
-      return;
     }
-    const orderInfo = Object.assign({}, state);
-    context.placeOrder(orderInfo);
-    history.push('/');
   };
 
   const creditCardIsValid = () => {
@@ -94,6 +101,8 @@ export default function CheckoutForm(props) {
                 label="Name"
                 name="name"
                 id="nameInput"
+                error={!!state.emptyNameError}
+                helperText={state.emptyNameError}
                 value={state.name}
                 onChange={handleChange}
                 fullWidth
@@ -118,6 +127,8 @@ export default function CheckoutForm(props) {
                 id="addressInput"
                 name="shippingAddress"
                 label="Shipping Address"
+                error={!!state.emptyAddressError}
+                helperText={state.emptyAddressError}
                 fullWidth
                 multiline
                 rows="5"
