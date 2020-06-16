@@ -37,7 +37,7 @@ export default function ProductListItem(props) {
 
   return (
     <Grid className={classes.root} item lg={4} sm={6} xs={12}>
-      <Card className={classes.card} onClick={() => history.push(`/products/${product.id}`)}>
+      <Card className={classes.card} onClick={() => history.push(`/products/${product.productId}`)}>
         <CardActionArea>
           <CardMedia
             className={classes.cardImage}
