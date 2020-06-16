@@ -1,14 +1,14 @@
-# wicked-sales-js
+# option-selects
 A full stack Node.js and React shopping cart app.
 
 ### Live Demo
-Link: https://wicked-sales.grantkang.com
+Link: https://os.grantkang.com
 
 ![demo](images/demo.jpg)
 
 ### Technologies Used
 * React
-* Bootstrap
+* Material-UI
 * Node.js
 * Express
 * Node Fetch
