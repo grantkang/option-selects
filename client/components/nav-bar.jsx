@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
     display: 'none',
     [theme.breakpoints.down('xs')]: {
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'end'
+      flexDirection: 'row-reverse',
+      alignItems: 'center'
     }
   },
   desktop: {
@@ -85,10 +85,13 @@ export default function NavBar(props) {
         </Toolbar>
       </Container>
       <Toolbar className={`${classes.mobile} ${classes.innerBackground}`} disableGutters>
-        <Button className={`${classes.menuButton} ${classes.contrastText} ${classes.fullHeight}`} onClick={handleToggle}>
-          <Icon>menu</Icon>
-          <Typography variant="h6">Menu</Typography>
-        </Button>
+        <div>
+          <Button className={`${classes.contrastText} ${classes.fullHeight}`} onClick={handleToggle}>
+            <Icon>menu</Icon>
+            <Typography variant="h6">Menu</Typography>
+          </Button>
+        </div>
+
       </Toolbar>
       <Collapse in={!isMobile && open} className={classes.collapse}>
         {renderedNavItems}

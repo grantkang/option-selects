@@ -47,7 +47,7 @@ export default function Brands(props) {
   return (
     <div className={classes.root}>
       <Paper square className={classes.paper}>
-        <Typography className={classes.header} noWrap variant="h3" component="span">{`ALL ${name} PRODUCTS`}</Typography>
+        <Typography className={classes.header} variant="h3" component="span">{`ALL ${name} PRODUCTS`}</Typography>
       </Paper>
       <ProductList>
         {productListItems}
