@@ -216,9 +216,16 @@ export default function ProductDetails(props) {
                     </Grid>
                   </Grid>
                 ) : null}
-                <Typography variant="h4">
-                  {`$${(product.price / 100).toFixed(2)}`}
-                </Typography>
+                {context.getSecret() ? (
+                  <Fragment>
+                    <Typography variant="h4" color="secondary"><s>{`$${(product.price / 100).toFixed(2)}`}</s></Typography>
+                    <Typography variant="h4">{`$${(0).toFixed(2)}`}</Typography>
+                  </Fragment>
+                ) : (
+                  <Typography variant = "h4">
+                    {`$${(product.price / 100).toFixed(2)}`}
+                  </Typography>
+                )}
                 <Button variant="contained" color="secondary" onClick={() => context.addToCart({ productId: product.productId, ...currentSize, ...currentColor })}>Add to Cart</Button>
 
               </Grid>

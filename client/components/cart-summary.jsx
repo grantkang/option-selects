@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, Fragment } from 'react';
 import CartSummaryItem from './cart-summary-item';
 import ApplicationContext from '../lib/context';
 import { useHistory } from 'react-router-dom';
@@ -50,7 +50,19 @@ export default function CartSummary(props) {
         {cartItems}
       </Box>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Typography display="inline" variant="h4">{`Item Total: $${(totalPrice / 100).toFixed(2)}`}</Typography>
+        <div>
+          <Typography display="inline" variant="h4">{'Item Total: '}</Typography>
+          {context.getSecret() ? (
+            <Fragment>
+              <Typography display="inline" variant="h4" color="secondary"><s>{`$${(totalPrice / 100).toFixed(2)}`}</s></Typography>
+              <Typography display="inline" variant="h4">{`  $${(0).toFixed(2)}`}</Typography>
+            </Fragment>
+          ) : (
+            <Typography display="inline" variant="h4">
+              {`$${(totalPrice / 100).toFixed(2)}`}
+            </Typography>
+          )}
+        </div>
         <Button
           variant="contained"
           color="secondary"

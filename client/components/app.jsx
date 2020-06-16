@@ -22,6 +22,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
+import Code from '../lib/code';
 
 const appTitle = 'Option Selects';
 
@@ -51,6 +52,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const fs220 = new Code();
+const audio = document.querySelector('#party-time');
+
 export default function App(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.up('sm'));
@@ -62,6 +66,41 @@ export default function App(props) {
     body: `Welcome to ${appTitle}! This is just a demo and not a real store. Please do not use your real info!`,
     options: [{ label: 'OK, got it!' }]
   });
+  const [secret, setSecret] = useState(false);
+
+  const _handleKeyDown = event => {
+    if (fs220.add(event.keyCode) === '🤫') {
+      audio.play();
+      openSnackbar('Welcome to LFZ Afterhours.. 🤫');
+      enableSecret();
+    }
+  };
+
+  const getSecret = () => {
+    fetch('/api/fs220')
+      .then(response => response.json())
+      .then(data => {
+        setSecret(data['🤫']);
+      });
+  };
+
+  const enableSecret = () => {
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    fetch('/api/fs220', req)
+      .then(response => response.json())
+      .then(data => {
+        setSecret(data['🤫']);
+      });
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', _handleKeyDown);
+  }, []);
 
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -69,6 +108,7 @@ export default function App(props) {
   });
 
   useEffect(() => {
+    getSecret();
     getCartItems();
   }, []);
 
@@ -140,6 +180,7 @@ export default function App(props) {
       .then(response => response.json())
       .then(processedOrder => {
         setCart([]);
+        setSecret(false);
         openModal('Psuedo Order Placed', 'Thanks for trying out the demo!', [{ label: 'Continue' }]);
       });
   };
@@ -151,7 +192,8 @@ export default function App(props) {
     openModal,
     openSnackbar,
     getApplicationTitle: () => { return appTitle; },
-    getCart: () => { return cart.slice(); }
+    getCart: () => { return cart.slice(); },
+    getSecret: () => { return secret; }
   };
 
   return (

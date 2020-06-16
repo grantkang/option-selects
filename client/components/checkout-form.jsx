@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import ApplicationContext from '../lib/context';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -142,7 +142,19 @@ export default function CheckoutForm(props) {
           </Grid>
         </Paper>
         <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Typography variant="h5">{`Order Total: $${(totalPrice / 100).toFixed(2)}`}</Typography>
+          <div>
+            <Typography display="inline" variant="h5">{'Item Total: '}</Typography>
+            {context.getSecret() ? (
+              <Fragment>
+                <Typography display="inline" variant="h5" color="secondary"><s>{`$${(totalPrice / 100).toFixed(2)}`}</s></Typography>
+                <Typography display="inline" variant="h5">{`  $${(0).toFixed(2)}`}</Typography>
+              </Fragment>
+            ) : (
+              <Typography display="inline" variant="h5">
+                {`$${(totalPrice / 100).toFixed(2)}`}
+              </Typography>
+            )}
+          </div>
           <Button component="button" type="submit" variant="contained" color="secondary">Place Order</Button>
         </Box>
       </form>

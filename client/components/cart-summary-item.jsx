@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext, Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import ApplicationContext from '../lib/context';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 export default function CartSummaryItem(props) {
   const classes = useStyles();
   const cartItem = props.cartItem;
+  const context = useContext(ApplicationContext);
   return (
     <Paper>
       <Grid container>
@@ -38,9 +40,16 @@ export default function CartSummaryItem(props) {
         </Grid>
         <Grid className={classes.productDetails} item xs={12} md={6}>
           <Typography variant="h5">{cartItem.name}</Typography>
-          <Typography variant="h4">
-            {`$${(cartItem.price / 100).toFixed(2)}`}
-          </Typography>
+          {context.getSecret() ? (
+            <Fragment>
+              <Typography variant="h4" color="secondary"><s>{`$${(cartItem.price / 100).toFixed(2)}`}</s></Typography>
+              <Typography variant="h4">{`$${(0).toFixed(2)}`}</Typography>
+            </Fragment>
+          ) : (
+            <Typography variant="h4">
+              {`$${(cartItem.price / 100).toFixed(2)}`}
+            </Typography>
+          )}
           {cartItem.colorId ? (
             <div>
               <Typography display="inline" variant="button">Color: {cartItem.colorName}</Typography>
