@@ -130,7 +130,7 @@ export default function ProductDetails(props) {
       const isActive = currentSize && size.sizeId === currentSize.sizeId;
       return (
         <Button
-          variant={isActive ? 'outlined' : 'default'}
+          variant={isActive ? 'outlined' : 'text'}
           key={size.sizeId}
           onClick={() => {
             handleSizeIconClick(size);
@@ -208,7 +208,7 @@ export default function ProductDetails(props) {
                 <Typography variant="h4">
                   {`$${(product.price / 100).toFixed(2)}`}
                 </Typography>
-                <Button variant="contained" color="secondary" onClick={() => context.addToCart(product)}>Add to Cart</Button>
+                <Button variant="contained" color="secondary" onClick={() => context.addToCart({ productId: product.productId, ...currentSize, ...currentColor })}>Add to Cart</Button>
 
               </Grid>
             </Grid>

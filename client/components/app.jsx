@@ -96,7 +96,7 @@ export default function App(props) {
     fetch('/api/cart', req)
       .then(response => response.json())
       .then(cartItem => {
-        const newCart = this.state.cart.slice();
+        const newCart = cart.slice();
         newCart.push(cartItem);
         setCart(newCart);
       });
