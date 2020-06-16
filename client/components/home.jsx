@@ -10,12 +10,12 @@ const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(4, 0)
   },
-  paper: {
+  header: {
     display: 'inline-block',
     padding: theme.spacing(1, 2, 1, 4),
     background: theme.palette.secondary.main
   },
-  header: {
+  headerText: {
     color: theme.palette.secondary.contrastText
   }
 }));
@@ -60,8 +60,8 @@ export default function Home(props) {
     <Fragment>
       <Carousel items={carouselItems}/>
       <div className={classes.root}>
-        <Paper square className={classes.paper}>
-          <Typography className={classes.header} noWrap variant="h5" component="span">{'ALL PRODUCTS'}</Typography>
+        <Paper square className={classes.header}>
+          <Typography className={classes.headerText} noWrap variant="h5" component="span">{'ALL PRODUCTS'}</Typography>
         </Paper>
         <ProductList>
           {productListItems}
