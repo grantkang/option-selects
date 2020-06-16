@@ -132,6 +132,7 @@ app.get('/api/products/:productId', (req, res, next) => {
            "p"."name",
            "p"."price",
            "p"."description",
+           "p"."categoryId",
            "c"."name" AS "category",
            "b"."name" AS "brand"
       FROM "products" AS "p"
@@ -148,9 +149,9 @@ app.get('/api/products/:productId', (req, res, next) => {
       }
       const sql = `
         SELECT
-        JSON_AGG(DISTINCT "colors") "colors",
-        JSON_AGG(DISTINCT "productImages") "images",
-        JSON_AGG(DISTINCT "sizes") "sizes"
+        COALESCE(json_agg(DISTINCT "colors") FILTER (WHERE "colors"."colorId" IS NOT NULL), '[]') "colors",
+        COALESCE(json_agg(DISTINCT "productImages") FILTER (WHERE "productImages"."productImageId" IS NOT NULL), '[]') "images",
+        COALESCE(json_agg(DISTINCT "sizes") FILTER (WHERE "sizes"."sizeId" IS NOT NULL), '[]') "sizes"
         FROM "products"
         LEFT JOIN "productsColors" USING("productId")
         LEFT JOIN "colors" USING ("colorId")
@@ -164,7 +165,25 @@ app.get('/api/products/:productId', (req, res, next) => {
       return db.query(sql, params)
         .then(result => {
           const aggregates = result.rows[0];
-          res.status(200).json({ ...product, ...aggregates });
+
+          const sql = `
+            SELECT "name",
+                  "price",
+                  "products"."productId",
+                  "singleImage"."imagePath"
+              FROM "products"
+              JOIN (
+                SELECT DISTINCT ON ("productId") * FROM "productImages"
+              ) AS "singleImage" USING ("productId")
+              WHERE "products"."categoryId" = $1 AND "products"."productId" != $2
+              LIMIT 3;
+          `;
+          const params = [product.categoryId, product.productId];
+          return db.query(sql, params)
+            .then(result => {
+              const relatedProducts = result.rows;
+              res.status(200).json({ ...product, ...aggregates, relatedProducts });
+            });
         });
     })
     .catch(err => {
