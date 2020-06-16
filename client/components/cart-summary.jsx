@@ -2,8 +2,31 @@ import React, { useContext } from 'react';
 import CartSummaryItem from './cart-summary-item';
 import ApplicationContext from '../lib/context';
 import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2, 0),
+    '& > *': {
+      margin: theme.spacing(2, 0)
+    }
+  },
+  header: {
+    display: 'inline-block',
+    padding: theme.spacing(1, 2, 1, 4),
+    background: theme.palette.secondary.main
+  },
+  headerText: {
+    color: theme.palette.secondary.contrastText
+  }
+}));
 
 export default function CartSummary(props) {
+  const classes = useStyles();
   const context = useContext(ApplicationContext);
   const history = useHistory();
   const cart = context.getCart();
@@ -19,22 +42,23 @@ export default function CartSummary(props) {
   }, 0);
 
   return (
-    <div>
-      <span className="pointer" onClick={() => history.push('/')}>&#60; back to catalog</span>
-      <h2>My Cart</h2>
-      <div className="d-flex flex-column">
+    <div className={classes.root}>
+      <Paper square className={classes.header}>
+        <Typography className={classes.headerText} noWrap variant="h4" component="span">{'My Cart'}</Typography>
+      </Paper>
+      <Box display="flex" flexDirection="column">
         {cartItems}
-      </div>
-      <div className="d-flex align-items-center justify-content-between">
-        <h2>{`Item Total: $${(totalPrice / 100).toFixed(2)}`}</h2>
-        <button
-          className="btn btn-primary"
+      </Box>
+      <Box display="flex" flexDirection="row" justifyContent="space-between">
+        <Typography display="inline" variant="h4">{`Item Total: $${(totalPrice / 100).toFixed(2)}`}</Typography>
+        <Button
+          variant="contained"
+          color="secondary"
           onClick={() => history.push('/checkout')}
           disabled={!cart.length}>
-            Checkout
-        </button>
-      </div>
+          Checkout
+        </Button>
+      </Box>
     </div>
   );
-
 }
