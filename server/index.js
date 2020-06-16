@@ -197,15 +197,24 @@ app.get('/api/cart', (req, res, next) => {
     return res.status(200).json([]);
   }
   const sql = `
-    select "c"."cartItemId",
-           "c"."price",
-           "p"."productId",
-           "p"."image",
-           "p"."name",
-           "p"."shortDescription"
-      FROM "cartItems" AS "c"
-      JOIN "products" AS "p" USING ("productId")
-     WHERE "c"."cartId" = $1
+        SELECT "c"."cartItemId",
+               "c"."price",
+               "c"."sizeId",
+               "s"."abbreviation" AS "sizeAbreviation",
+               "c"."colorId",
+               "co"."name" AS "colorName",
+               "singleImage"."imagePath" AS "imagePath",
+               "p"."productId",
+               "p"."name",
+               "p"."description"
+          FROM "cartItems" AS "c"
+          JOIN "products" AS "p" USING ("productId")
+     LEFT JOIN "colors" AS "co" ON ("c"."colorId" IS NOT NULL AND "c"."colorId" = "co"."colorId")
+     LEFT JOIN "sizes" AS "s" ON ("c"."sizeId" IS NOT NULL AND "c"."sizeId" = "s"."sizeId")
+          JOIN (
+            SELECT DISTINCT ON ("productId") * FROM "productImages"
+          ) AS "singleImage" USING ("productId")
+       WHERE "c"."cartId" = $1
   `;
   const params = [cartId];
   db.query(sql, params)
@@ -223,9 +232,17 @@ app.get('/api/cart', (req, res, next) => {
 });
 
 app.post('/api/cart', (req, res, next) => {
-  const productId = req.body.productId;
+  const { productId } = req.body;
+  const { colorId } = req.body;
+  const { sizeId } = req.body;
   if (!parseInt(productId, 10)) {
     return next(new ClientError('"productId" must be a positive integer', 400));
+  }
+  if (parseInt(sizeId, 10) <= 0 && sizeId !== undefined) {
+    return next(new ClientError('"sizeId" must be a positive integer', 400));
+  }
+  if (parseInt(colorId, 10) <= 0 && !colorId !== undefined) {
+    return next(new ClientError('"colorId" must be a positive integer', 400));
   }
 
   const sql = `
@@ -252,45 +269,61 @@ app.post('/api/cart', (req, res, next) => {
             const cart = result.rows[0];
             const cartIdAndPrice = {
               cartId: cart.cartId,
-              price: product.price
+              price: product.price,
+              sizeId,
+              colorId
             };
             return cartIdAndPrice;
           });
       } else {
         return {
           cartId: req.session.cartId,
-          price: product.price
+          price: product.price,
+          sizeId,
+          colorId
         };
       }
     })
-    .then(cartIdAndPrice => {
-      const cartId = cartIdAndPrice.cartId;
-      const price = cartIdAndPrice.price;
+    .then(cartItemData => {
+      const cartId = cartItemData.cartId;
+      const price = cartItemData.price;
+      const sizeId = cartItemData.sizeId;
+      const colorId = cartItemData.colorId;
       req.session.cartId = cartId;
       const sql = `
-        INSERT INTO "cartItems" ("cartId", "productId", "price")
-        VALUES ($1, $2, $3)
+        INSERT INTO "cartItems" ("cartId", "productId", "price", "sizeId", "colorId")
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING "cartItemId"
       `;
-      const params = [cartId, productId, price];
+      const params = [cartId, productId, price, sizeId, colorId];
       return db.query(sql, params)
         .then(result => {
           const cartItem = result.rows[0];
           return cartItem.cartItemId;
         });
-
     })
     .then(cartItemId => {
       const sql = `
         SELECT "c"."cartItemId",
                "c"."price",
+               "c"."sizeId",
+               "s"."abbreviation" AS "sizeAbreviation",
+               "c"."colorId",
+               "co"."name" AS "colorName",
                "p"."productId",
-               "p"."image",
+               "singleImage"."imagePath",
                "p"."name",
-               "p"."shortDescription"
+               "p"."description"
           FROM "cartItems" AS "c"
           JOIN "products" AS "p" USING ("productId")
+     LEFT JOIN "colors" AS "co" ON ("c"."colorId" IS NOT NULL AND "c"."colorId" = "co"."colorId")
+     LEFT JOIN "sizes" AS "s" ON ("c"."sizeId" IS NOT NULL AND "c"."sizeId" = "s"."sizeId")
+     LEFT JOIN (
+                SELECT *
+                FROM "productImages" AS "pi"
+          ) AS "singleImage" ON "c"."productId" = "singleImage"."productId" AND("c"."colorId" IS NULL OR "c"."colorId" = "singleImage"."colorId")
          WHERE "c"."cartItemId" = $1
+         LIMIT 1;
       `;
       const params = [cartItemId];
       return db.query(sql, params)
