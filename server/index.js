@@ -203,23 +203,29 @@ app.get('/api/cart', (req, res, next) => {
                "s"."abbreviation" AS "sizeAbreviation",
                "c"."colorId",
                "co"."name" AS "colorName",
-               "singleImage"."imagePath" AS "imagePath",
                "p"."productId",
+               "singleImage"."imagePath",
                "p"."name",
                "p"."description"
           FROM "cartItems" AS "c"
           JOIN "products" AS "p" USING ("productId")
      LEFT JOIN "colors" AS "co" ON ("c"."colorId" IS NOT NULL AND "c"."colorId" = "co"."colorId")
      LEFT JOIN "sizes" AS "s" ON ("c"."sizeId" IS NOT NULL AND "c"."sizeId" = "s"."sizeId")
-          JOIN (
-            SELECT DISTINCT ON ("productId") * FROM "productImages"
-          ) AS "singleImage" USING ("productId")
+     LEFT JOIN (
+                SELECT *
+                FROM "productImages" AS "pi"
+          ) AS "singleImage" ON "c"."productId" = "singleImage"."productId" AND("c"."colorId" IS NULL OR "c"."colorId" = "singleImage"."colorId")
        WHERE "c"."cartId" = $1
   `;
   const params = [cartId];
   db.query(sql, params)
     .then(result => {
-      const cart = result.rows;
+      const idSet = new Set();
+      const cart = result.rows.filter(cartItem => {
+        const exists = idSet.has(cartItem.cartItemId);
+        idSet.add(cartItem.cartItemId);
+        return exists;
+      });
       if (!cart.length === 0) {
         next(new ClientError(`Cannot find cart with "cartId" ${cartId}`, 404));
       } else {
