@@ -216,6 +216,7 @@ app.get('/api/cart', (req, res, next) => {
                 FROM "productImages" AS "pi"
           ) AS "singleImage" ON "c"."productId" = "singleImage"."productId" AND("c"."colorId" IS NULL OR "c"."colorId" = "singleImage"."colorId")
        WHERE "c"."cartId" = $1
+       ORDER BY "singleImage"."productImageId"
   `;
   const params = [cartId];
   db.query(sql, params)
@@ -224,7 +225,7 @@ app.get('/api/cart', (req, res, next) => {
       const cart = result.rows.filter(cartItem => {
         const exists = idSet.has(cartItem.cartItemId);
         idSet.add(cartItem.cartItemId);
-        return exists;
+        return !exists;
       });
       if (!cart.length === 0) {
         next(new ClientError(`Cannot find cart with "cartId" ${cartId}`, 404));
@@ -329,6 +330,7 @@ app.post('/api/cart', (req, res, next) => {
                 FROM "productImages" AS "pi"
           ) AS "singleImage" ON "c"."productId" = "singleImage"."productId" AND("c"."colorId" IS NULL OR "c"."colorId" = "singleImage"."colorId")
          WHERE "c"."cartItemId" = $1
+         ORDER BY "singleImage"."productImageId"
          LIMIT 1;
       `;
       const params = [cartItemId];
