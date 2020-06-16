@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   cardImage: {
+    boxSizing: 'border-box',
     transition: 'opacity',
     transitionDuration: '.25s',
     transitionTimingFunction: 'linear',
@@ -44,8 +45,10 @@ export default function ProductListItem(props) {
             component="img"
             alt="Product Image"
             height="300"
+            width="100%"
             image={product.imagePath}
           />
+
           <CardContent>
             <Typography variant="h4">{product.name}</Typography>
             <Typography variant="h6">{`$${(product.price / 100).toFixed(2)}`}</Typography>
