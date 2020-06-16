@@ -68,39 +68,50 @@ const useStyles = makeStyles(theme => ({
 
 export default function ProductDetails(props) {
   const classes = useStyles();
-  const [product, setProduct] = useState(null);
-  const [imgIndex, setImgIndex] = useState(0);
-  const [currentColor, setCurrentColor] = useState(null);
-  const [currentSize, setCurrentSize] = useState(null);
+  const [state, setState] = useState({
+    product: null,
+    imgIndex: 0,
+    currentColor: null,
+    currentSize: null
+  });
   const { id } = useParams();
   const context = useContext(ApplicationContext);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetch(`/api/products/${id}`)
       .then(response => {
         return response.json();
       })
       .then(product => {
-        setProduct(product);
-        if (product.colors.length > 0) {
-          setCurrentColor(product.colors[0]);
-        }
-        if (product.sizes.length > 0) {
-          setCurrentSize(product.sizes[0]);
-        }
+        const newState = { ...state, product };
+        newState.currentColor = product.colors.length > 0 ? product.colors[0] : null;
+        newState.currentSize = product.sizes.length > 0 ? product.sizes[0] : null;
+        newState.imgIndex = 0;
+        setState(newState);
       });
   }, [id]);
 
   const handleColorIconClick = color => {
-    setImgIndex(0);
-    setCurrentColor(color);
+    setState({ ...state, imgIndex: 0, currentColor: color });
+
   };
 
   const handleSizeIconClick = size => {
-    setCurrentSize(size);
+    setState({ ...state, currentSize: size });
   };
 
+  const handleAltImageClick = index => {
+    setState({ ...state, imgIndex: index });
+  };
+
+  const product = state.product;
+
   if (product) {
+    const currentColor = state.currentColor;
+    const currentSize = state.currentSize;
+    const imgIndex = state.imgIndex;
+
     const filteredImages = product.images.filter(image => {
       return !product.colors.length || (currentColor && image.colorId === currentColor.colorId);
     });
@@ -108,7 +119,7 @@ export default function ProductDetails(props) {
     const renderedProductImages = filteredImages.map((image, i) => {
       return (
         <Grid key={image.productImageId} container item xs={3}>
-          <img className={`${classes.image} ${classes.subImage}`} src={image.imagePath} alt="" onClick={() => setImgIndex(i)} />
+          <img className={`${classes.image} ${classes.subImage}`} src={image.imagePath} alt="" onClick={() => handleAltImageClick(i)} />
         </Grid>
       );
     });
