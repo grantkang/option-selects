@@ -10,12 +10,17 @@ import Brands from './brands';
 import ProductDetails from './product-details';
 import CartSummary from './cart-summary';
 import CheckoutForm from './checkout-form';
-import NotificationModal from './notification-modal';
 import AppContext from '../lib/context';
 import { createMuiTheme, ThemeProvider, responsiveFontSizes, makeStyles, useTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Categories from './categories';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 const appTitle = 'Option Selects';
 
@@ -129,7 +134,23 @@ export default function App(props) {
   return (
     <AppContext.Provider value={contextValue}>
       <ThemeProvider theme={defaultTheme}>
-        {modal.isOpen ? <NotificationModal modal={modal} close={contextValue.closeModal} /> : null}
+        <Dialog
+          open={modal.isOpen}
+          onClose={contextValue.closeModal}>
+          <DialogTitle id="alert-dialog-title">{modal.header}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {modal.body}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            {modal.options.map((option, i) => {
+              return (
+                <Button key={i} onClick={contextValue.closeModal}>{option.label}</Button>
+              );
+            })}
+          </DialogActions>
+        </Dialog>
         <Router>
           <Header cartItemCount={cart.length}/>
           <div className={classes.root}>
