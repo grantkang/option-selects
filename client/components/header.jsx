@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import NavBar from './nav-bar';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,10 +77,10 @@ export default function Header(props) {
               </div>
               <div className={classes.midSection} />
               <div className={classes.desktop}>
-                <Typography variant="h6">{cartItemCountText}</Typography>
-                <IconButton area-label="cart" onClick={() => history.push('/cart')}>
+                <Button area-label="cart" onClick={() => history.push('/cart')}>
+                  <Typography className={classes.contrastText} variant="h6">{cartItemCountText}</Typography>
                   <ShoppingCartIcon className={classes.contrastText} />
-                </IconButton>
+                </Button>
               </div>
               <div className={classes.mobile}>
                 <IconButton area-label="cart" onClick={() => history.push('/cart')}>
