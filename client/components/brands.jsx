@@ -30,6 +30,7 @@ export default function Brands(props) {
     fetch(`/api/brands/${id}`)
       .then(response => response.json())
       .then(brand => {
+        window.scrollTo(0, 0);
         setName(brand.name);
         setProducts(brand.products);
       });

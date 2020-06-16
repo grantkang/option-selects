@@ -30,6 +30,7 @@ export default function Categories(props) {
     fetch(`/api/categories/${id}`)
       .then(response => response.json())
       .then(category => {
+        window.scrollTo(0, 0);
         setName(category.name);
         setProducts(category.products);
       });

@@ -78,12 +78,12 @@ export default function ProductDetails(props) {
   const context = useContext(ApplicationContext);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     fetch(`/api/products/${id}`)
       .then(response => {
         return response.json();
       })
       .then(product => {
+        window.scrollTo(0, 0);
         const newState = { ...state, product };
         newState.currentColor = product.colors.length > 0 ? product.colors[0] : null;
         newState.currentSize = product.sizes.length > 0 ? product.sizes[0] : null;
