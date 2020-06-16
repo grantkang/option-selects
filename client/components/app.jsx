@@ -200,6 +200,8 @@ export default function App(props) {
     <AppContext.Provider value={contextValue}>
       <ThemeProvider theme={defaultTheme}>
         <Dialog
+          disableBackdropClick
+          disableEscapeKeyDown
           open={modal.isOpen}
           onClose={contextValue.closeModal}>
           <DialogTitle>{modal.header}</DialogTitle>
