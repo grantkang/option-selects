@@ -1,15 +1,45 @@
 import React, { useContext, useState } from 'react';
 import ApplicationContext from '../lib/context';
 import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { Box, Button, TextField, Grid } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2, 0),
+    '& > *': {
+      margin: theme.spacing(2, 0)
+    }
+  },
+  header: {
+    display: 'inline-block',
+    padding: theme.spacing(1, 2, 1, 4),
+    background: theme.palette.secondary.main
+  },
+  headerText: {
+    color: theme.palette.secondary.contrastText
+  },
+  form: {
+    '& > *': {
+      margin: theme.spacing(2, 0)
+    }
+  },
+  formSurface: {
+    padding: theme.spacing(2)
+  }
+}));
 
 export default function CheckoutForm(props) {
+  const classes = useStyles();
   const history = useHistory();
   const context = useContext(ApplicationContext);
   const [state, setState] = useState({
     name: '',
     creditCard: '',
     shippingAddress: '',
-    creditCardError: false
+    creditCardError: ''
   });
 
   const cart = context.getCart();
@@ -27,7 +57,7 @@ export default function CheckoutForm(props) {
     e.preventDefault();
     if (!creditCardIsValid()) {
       const newState = Object.assign({}, state);
-      newState.creditCardError = true;
+      newState.creditCardError = 'Ex.) 1234-1234-1234-1234 or 1234123412341234';
       setState(newState);
       return;
     }
@@ -41,47 +71,57 @@ export default function CheckoutForm(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Checkout</h1>
-      <span>{`Order Total: $${(totalPrice / 100).toFixed(2)}`}</span>
-      <div className="form-group">
-        <label htmlFor="nameInput">Name</label>
-        <input
-          required
-          type="text"
-          name="name"
-          className="form-control"
-          id="nameInput"
-          value={state.name}
-          onChange={handleChange}/>
-      </div>
-      <div className="form-group">
-        <label htmlFor="creditCardInput">Credit Card</label>
-        <input
-          required
-          type="text"
-          name="creditCard"
-          className={state.creditCardError ? 'form-control is-invalid' : 'form-control'}
-          id="creditCardInput"
-          value={state.creditCard}
-          onChange={handleChange}></input>
-        {state.creditCardError ? <small className="text-danger">Please input a valid credit card number</small> : null }
-      </div>
-      <div className="form-group">
-        <label htmlFor="addressInput">Shipping Address</label>
-        <textarea
-          required
-          name="shippingAddress"
-          className="form-control"
-          id="addressInput"
-          rows="4"
-          value={state.shippingAddress}
-          onChange={handleChange}></textarea>
-      </div>
-      <div className="d-flex align-items-center justify-content-between">
-        <span className="pointer" onClick={() => history.push('/')}>&#60; Continue Shopping</span>
-        <button type="submit" className="btn btn-primary">Place Order</button>
-      </div>
-    </form>
+    <div className={classes.root}>
+      <Paper square className={classes.header}>
+        <Typography className={classes.headerText} noWrap variant="h4" component="span">Checkout</Typography>
+      </Paper>
+      <form className={classes.form} onSubmit={handleSubmit}>
+        <Paper className={classes.formSurface}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <TextField
+                required
+                label="Name"
+                name="name"
+                id="nameInput"
+                value={state.name}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                required
+                label="Credit Card"
+                name="creditCard"
+                id="creditCardInput"
+                error={!!state.creditCardError}
+                helperText={state.creditCardError}
+                value={state.creditCard}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                id="addressInput"
+                name="shippingAddress"
+                label="Shipping Address"
+                fullWidth
+                multiline
+                rows="5"
+                onChange={handleChange}
+                value={state.shippingAddress}
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Typography variant="h5">{`Order Total: $${(totalPrice / 100).toFixed(2)}`}</Typography>
+          <Button component="button" type="submit" variant="contained" color="secondary">Place Order</Button>
+        </Box>
+      </form>
+    </div>
   );
 }
