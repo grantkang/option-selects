@@ -22,6 +22,9 @@ const useStyles = makeStyles(theme => ({
       opacity: '.5'
     }
   },
+  fullHeight: {
+    height: '100%'
+  },
   cardImage: {
     boxSizing: 'border-box',
     transition: 'opacity',
@@ -53,7 +56,7 @@ export default function ProductListItem(props) {
   return (
     <Grid className={classes.root} item lg={4} sm={6} xs={12}>
       <Card className={classes.card} onClick={() => history.push(`/products/${product.productId}`)}>
-        <CardActionArea>
+        <CardActionArea className={classes.fullHeight}>
           <CardMedia
             className={classes.cardImage}
             component="img"
@@ -62,7 +65,6 @@ export default function ProductListItem(props) {
             width="100%"
             image={product.imagePath}
           />
-
           <CardContent>
             <Typography variant="h4">{product.name}</Typography>
             {priceText}
