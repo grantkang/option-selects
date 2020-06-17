@@ -176,7 +176,8 @@ ALTER SEQUENCE public."cartItems_cartItemId_seq" OWNED BY public."cartItems"."ca
 
 CREATE TABLE public.carts (
     "cartId" integer NOT NULL,
-    "createdAt" timestamp(6) with time zone DEFAULT now() NOT NULL
+    "createdAt" timestamp(6) with time zone DEFAULT now() NOT NULL,
+    "codeEnabled" boolean DEFAULT false
 );
 
 
@@ -580,6 +581,36 @@ COPY public.brands ("brandId", name) FROM stdin;
 --
 
 COPY public."cartItems" ("cartItemId", "cartId", "productId", price, "sizeId", "colorId") FROM stdin;
+78	35	9	20000	\N	1
+79	35	18	600	\N	3
+80	35	25	220	3	\N
+81	35	25	220	1	\N
+82	36	19	600	\N	1
+83	36	31	4000	\N	3
+84	36	26	3200	2	\N
+85	36	26	3200	1	\N
+86	36	10	22500	\N	\N
+87	36	14	3500	\N	\N
+88	37	18	600	\N	2
+89	37	19	600	\N	1
+90	37	19	600	\N	1
+91	37	13	7999	\N	\N
+92	37	18	600	\N	1
+93	38	14	3500	\N	\N
+94	39	18	600	\N	1
+95	40	14	3500	\N	\N
+96	41	19	600	\N	1
+97	42	18	600	\N	1
+98	42	18	600	\N	1
+99	42	18	600	\N	1
+100	43	11	25000	\N	\N
+101	44	11	25000	\N	\N
+102	45	11	25000	\N	\N
+103	46	3	30000	\N	\N
+104	47	11	25000	\N	\N
+105	47	3	30000	\N	\N
+106	48	25	220	1	\N
+107	48	19	600	\N	1
 \.
 
 
@@ -587,7 +618,21 @@ COPY public."cartItems" ("cartItemId", "cartId", "productId", price, "sizeId", "
 -- Data for Name: carts; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.carts ("cartId", "createdAt") FROM stdin;
+COPY public.carts ("cartId", "createdAt", "codeEnabled") FROM stdin;
+35	2020-06-15 23:11:39.901779-07	f
+36	2020-06-15 23:49:43.26146-07	f
+37	2020-06-16 01:08:35.282246-07	f
+38	2020-06-16 01:23:59.363955-07	f
+39	2020-06-16 01:24:45.565637-07	f
+40	2020-06-16 01:25:12.781489-07	f
+41	2020-06-16 01:30:10.120295-07	f
+42	2020-06-16 01:37:03.81151-07	f
+43	2020-06-16 15:42:25.551279-07	f
+44	2020-06-16 15:44:24.060815-07	f
+45	2020-06-16 15:44:24.065902-07	t
+46	2020-06-16 16:21:00.082922-07	f
+47	2020-06-16 16:25:38.570786-07	t
+48	2020-06-16 16:30:00.935489-07	t
 \.
 
 
@@ -634,6 +679,19 @@ COPY public.colors ("colorId", name, hex) FROM stdin;
 --
 
 COPY public.orders ("orderId", "cartId", name, "creditCard", "shippingAddress", "createdAt") FROM stdin;
+13	36	Grant	1234123412341234	My House	2020-06-16 00:49:05.667662-07
+14	37	Grant	1234123412341234	asdfa	2020-06-16 01:23:38.749286-07
+15	38	G	1234123412341234	fart	2020-06-16 01:24:09.29418-07
+16	39	g	1234123412341234	a	2020-06-16 01:24:52.463258-07
+17	40	Grant Kang	1234123412341234	Fart	2020-06-16 01:25:28.876765-07
+18	41	G	1234123412341234	f	2020-06-16 01:35:45.971987-07
+19	42	G	1234123412341234	Fart	2020-06-16 01:40:23.900623-07
+20	45	G	1234123412341234	f	2020-06-16 16:20:03.618761-07
+21	46	F	1234123412341234	a	2020-06-16 16:21:14.806484-07
+22	47	F	1234123412341234	f	2020-06-16 16:25:49.643575-07
+23	47	F	1234123412341234	F	2020-06-16 16:26:13.692395-07
+24	47	f	1234123412341234	a	2020-06-16 16:29:20.249508-07
+25	48	Fart	123412321312312312	Fart	2020-06-16 16:58:37.337901-07
 \.
 
 
@@ -934,14 +992,14 @@ SELECT pg_catalog.setval('public.brands_id_seq', 14, true);
 -- Name: cartItems_cartItemId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 77, true);
+SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 107, true);
 
 
 --
 -- Name: carts_cartId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."carts_cartId_seq"', 34, true);
+SELECT pg_catalog.setval('public."carts_cartId_seq"', 48, true);
 
 
 --
@@ -962,7 +1020,7 @@ SELECT pg_catalog.setval('public.colors_id_seq', 15, true);
 -- Name: orders_orderId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."orders_orderId_seq"', 12, true);
+SELECT pg_catalog.setval('public."orders_orderId_seq"', 25, true);
 
 
 --
