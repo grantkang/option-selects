@@ -611,6 +611,10 @@ COPY public."cartItems" ("cartItemId", "cartId", "productId", price, "sizeId", "
 105	47	3	30000	\N	\N
 106	48	25	220	1	\N
 107	48	19	600	\N	1
+108	49	2	30000	\N	\N
+109	50	19	600	\N	1
+110	52	1	30000	\N	\N
+111	53	14	3500	\N	\N
 \.
 
 
@@ -633,6 +637,12 @@ COPY public.carts ("cartId", "createdAt", "codeEnabled") FROM stdin;
 46	2020-06-16 16:21:00.082922-07	f
 47	2020-06-16 16:25:38.570786-07	t
 48	2020-06-16 16:30:00.935489-07	t
+49	2020-06-16 21:23:59.192034-07	t
+50	2020-06-16 21:37:59.631299-07	t
+51	2020-06-16 23:46:19.362424-07	t
+52	2020-06-18 11:31:27.747652-07	t
+53	2020-06-18 17:58:28.018639-07	t
+54	2020-06-18 18:06:12.414703-07	t
 \.
 
 
@@ -692,6 +702,10 @@ COPY public.orders ("orderId", "cartId", name, "creditCard", "shippingAddress", 
 23	47	F	1234123412341234	F	2020-06-16 16:26:13.692395-07
 24	47	f	1234123412341234	a	2020-06-16 16:29:20.249508-07
 25	48	Fart	123412321312312312	Fart	2020-06-16 16:58:37.337901-07
+26	49	f	1234123412341234	a	2020-06-16 21:25:26.725302-07
+27	50	f	1234123412341234	F	2020-06-16 21:40:04.419877-07
+28	52	g	1234123412341234	f	2020-06-18 17:58:15.441582-07
+29	53	f	1234123412341234	F	2020-06-18 18:06:03.018318-07
 \.
 
 
@@ -860,9 +874,9 @@ COPY public.products ("productId", name, price, description, "categoryId", "bran
 32	BROOK PS3 | PS4 | SWITCH | PC WIRELESS FIGHTING BOARD	8000	Brook is following up their PS3/4 Fighting Board with Audio and now adding Wireless capability to it, which is the only difference. This board also allows wired capability (with the use of a USB Type A to B cable) should you need to use it for various tournaments that may not allow the wireless capability	7	14
 33	BROOK PS3/PS4 to NEO•GEO Mini Super Converter	7000	Brook Super Converter series make new controllers compatible with retro consoles. This not only saves your money but also means that you can use the controllers you have grown accustomed to. Installation and use of the PS3/PS4 to NEOGEO mini controller Adapter is effortless.	7	14
 34	BROOK RETRO BOARD (NES | SNES | GC | Xbox | DC | TG16 | PS1 | PS2 | PS3 | PC)	7500	Brook's Universal Fighting Board covered the PS3 - PS4 - Xbox 360 - Xbox One - PC - WIIU and Switch, which is a lot of systems.  This though, leaves the void for the older systems that Brook did not focus on.  For the past few years, we and Jasen's Customs have been working with Brook on developing just that.	7	14
-35	Sanwa Denshi SQUARE Restrictor Gate	700	This gate is fully compatible with all of our HRAP sticks from Hori as well as our QanBa Q2 and Q4 sticks that uses Sanwa Denshi parts (not Seimitsu / SE parts).	3	14
-36	SEIMITSU Octogate (Restrictor Plate)	400	Convert your square gate to a 8 way octagonal gate.  This is an official Seimitsu product and fits their following joysticks: LS-33, LS-55, LS-56-01-AS, LS-56, LS-58, LS-60	4	14
-37	QANBA Obsidian USB Replacemnt DOOR (Original Product)	1500	One of the most common things about arcade sticks?  A broken door that houses the USB cable. What's more frustrating isn't so much the door is broken, but you simply can't buy a replacement even if you wanted to as some manufacturer's don't offer these parts to us.The good news, Qanba was very accommodating to allow us to stock these doors. This is the official stock door for the Qanba Obsidian.	7	14
+37	QANBA Obsidian USB Replacemnt DOOR (Original Product)	1500	One of the most common things about arcade sticks?  A broken door that houses the USB cable. What's more frustrating isn't so much the door is broken, but you simply can't buy a replacement even if you wanted to as some manufacturer's don't offer these parts to us.The good news, Qanba was very accommodating to allow us to stock these doors. This is the official stock door for the Qanba Obsidian.	7	6
+36	SEIMITSU Octogate (Restrictor Plate)	400	Convert your square gate to a 8 way octagonal gate.  This is an official Seimitsu product and fits their following joysticks: LS-33, LS-55, LS-56-01-AS, LS-56, LS-58, LS-60	7	4
+35	Sanwa Denshi SQUARE Restrictor Gate	700	This gate is fully compatible with all of our HRAP sticks from Hori as well as our QanBa Q2 and Q4 sticks that uses Sanwa Denshi parts (not Seimitsu / SE parts).	7	3
 \.
 
 
@@ -992,14 +1006,14 @@ SELECT pg_catalog.setval('public.brands_id_seq', 14, true);
 -- Name: cartItems_cartItemId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 107, true);
+SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 111, true);
 
 
 --
 -- Name: carts_cartId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."carts_cartId_seq"', 48, true);
+SELECT pg_catalog.setval('public."carts_cartId_seq"', 54, true);
 
 
 --
@@ -1020,7 +1034,7 @@ SELECT pg_catalog.setval('public.colors_id_seq', 15, true);
 -- Name: orders_orderId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."orders_orderId_seq"', 25, true);
+SELECT pg_catalog.setval('public."orders_orderId_seq"', 29, true);
 
 
 --
