@@ -23,6 +23,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import Code from '../lib/code';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const appTitle = 'Option Selects';
 
@@ -37,18 +38,32 @@ let defaultTheme = createMuiTheme({
     secondary: {
       main: '#9F1D1F',
       contrastText: '#fff'
-    },
-    background: {
-      main: '#f8f9fa'
     }
   }
-
 });
-
 defaultTheme = responsiveFontSizes(defaultTheme);
+
+let altTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#ED5F5D',
+      light: '#f6685e',
+      dark: '#730A04',
+      contrastText: '#fff'
+    },
+    secondary: {
+      main: '#FACC42',
+      contrastText: '#fff'
+    }
+  }
+});
+altTheme = responsiveFontSizes(altTheme);
+
 const useStyles = makeStyles(theme => ({
   root: {
-    background: '#f8f9fa'
+    transition: 'background .5s, filter 2s',
+    transitionTimingFunction: 'linear',
+    minHeight: '90vh'
   }
 }));
 
@@ -198,7 +213,8 @@ export default function App(props) {
 
   return (
     <AppContext.Provider value={contextValue}>
-      <ThemeProvider theme={defaultTheme}>
+      <CssBaseline />
+      <ThemeProvider theme={secret ? altTheme : defaultTheme}>
         <Dialog
           disableBackdropClick
           disableEscapeKeyDown
@@ -218,10 +234,10 @@ export default function App(props) {
             })}
           </DialogActions>
         </Dialog>
-        <Snackbar open={snackbar.open} autoHideDuration={3000} message={snackbar.message} onClose={closeSnackbar}/>
+        <Snackbar open={snackbar.open} autoHideDuration={5000} message={snackbar.message} onClose={closeSnackbar}/>
         <Router>
           <Header cartItemCount={cart.length}/>
-          <div className={classes.root}>
+          <div className={classes.root} style={secret ? { background: '#101D38', color: 'white' } : { background: '#F8F9FA', color: 'black' }}>
             <Container disableGutters={!isMobile}>
               <Switch>
                 <Route exact path="/">
