@@ -615,6 +615,7 @@ COPY public."cartItems" ("cartItemId", "cartId", "productId", price, "sizeId", "
 109	50	19	600	\N	1
 110	52	1	30000	\N	\N
 111	53	14	3500	\N	\N
+112	54	32	8000	\N	\N
 \.
 
 
@@ -623,6 +624,7 @@ COPY public."cartItems" ("cartItemId", "cartId", "productId", price, "sizeId", "
 --
 
 COPY public.carts ("cartId", "createdAt", "codeEnabled") FROM stdin;
+55	2020-06-18 19:20:41.548306-07	t
 35	2020-06-15 23:11:39.901779-07	f
 36	2020-06-15 23:49:43.26146-07	f
 37	2020-06-16 01:08:35.282246-07	f
@@ -706,6 +708,7 @@ COPY public.orders ("orderId", "cartId", name, "creditCard", "shippingAddress", 
 27	50	f	1234123412341234	F	2020-06-16 21:40:04.419877-07
 28	52	g	1234123412341234	f	2020-06-18 17:58:15.441582-07
 29	53	f	1234123412341234	F	2020-06-18 18:06:03.018318-07
+30	54	Grant Kang	1234123412341234	FUUU	2020-06-18 18:53:23.28019-07
 \.
 
 
@@ -723,7 +726,6 @@ COPY public."productImages" ("productId", "colorId", "imagePath", "styleId", "pr
 7	\N	/images/products/obsidian.jpg	\N	8
 7	\N	/images/products/obsidian-2.jpg	\N	9
 7	\N	/images/products/obsidian-3.jpg	\N	10
-7	\N	/images/products/obsidian-4.jpg	\N	11
 8	\N	/images/products/panthera-evo.jpg	\N	12
 8	\N	/images/products/panthera-evo-2.jpg	\N	13
 9	1	/images/products/hrap-4-kai-black.jpg	\N	14
@@ -746,7 +748,6 @@ COPY public."productImages" ("productId", "colorId", "imagePath", "styleId", "pr
 16	\N	/images/products/jlf.jpg	\N	31
 17	\N	/images/products/knee.png	\N	32
 17	\N	/images/products/knee-2.png	\N	33
-17	\N	/images/products/knee-3.png	\N	34
 18	\N	/images/products/sanwa-silent-solid-all.jpg	\N	35
 18	1	/images/products/sanwa-silent-solid-black.jpg	\N	36
 18	2	/images/products/sanwa-silent-solid-blue.jpg	\N	37
@@ -824,6 +825,7 @@ COPY public."productImages" ("productId", "colorId", "imagePath", "styleId", "pr
 35	\N	/images/products/sanwa_square_gate.jpg	\N	109
 36	\N	/images/products/seimitsu_octo.jpg	\N	110
 37	\N	/images/products/qanba-door.png	\N	111
+17	\N	/images/products/knee-3.jpg	\N	34
 \.
 
 
@@ -1006,14 +1008,14 @@ SELECT pg_catalog.setval('public.brands_id_seq', 14, true);
 -- Name: cartItems_cartItemId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 111, true);
+SELECT pg_catalog.setval('public."cartItems_cartItemId_seq"', 112, true);
 
 
 --
 -- Name: carts_cartId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."carts_cartId_seq"', 54, true);
+SELECT pg_catalog.setval('public."carts_cartId_seq"', 55, true);
 
 
 --
@@ -1034,7 +1036,7 @@ SELECT pg_catalog.setval('public.colors_id_seq', 15, true);
 -- Name: orders_orderId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."orders_orderId_seq"', 29, true);
+SELECT pg_catalog.setval('public."orders_orderId_seq"', 30, true);
 
 
 --
