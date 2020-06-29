@@ -196,7 +196,7 @@ export default function App(props) {
       .then(processedOrder => {
         setCart([]);
         setSecret(false);
-        openModal('Psuedo Order Placed', 'Thanks for trying out the demo!', [{ label: 'Continue' }]);
+        openModal('Pseudo Order Placed', 'Thanks for trying out the demo!', [{ label: 'Continue' }]);
       });
   };
 
