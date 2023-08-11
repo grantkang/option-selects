@@ -48,15 +48,15 @@ Link: https://os.grantkang.com
     ```
 2. While signed into PostgreSQL, create a **new database** using the following SQL command.
     ```sql
-    create database "wickedSales";
+    create database "optionSelects";
     ```
 3. Still signed into PostgreSQL, create a **new user** and remember the credentials. You'll be needing them for the configuration file.
     ```sql
-    create user "wickedSales" with password 'superstrongpassword';
+    create user "optionSelects" with password 'superstrongpassword';
     ```
 4. Still signed into PostgreSQL, give your new user full control over your new database with the following SQL command.
     ```sql
-    grant all privileges on database "wickedSales" to "wickedSales";
+    grant all privileges on database "optionSelects" to "optionSelects";
     ```
 5. Sign out of PostgreSQL with the following command. You should be returned to your bash prompt.
     ```sql
@@ -66,7 +66,7 @@ Link: https://os.grantkang.com
 
 1. Clone the repository.
     ```shell
-    $ git clone https://github.com/grantkang/wicked-sales-js.git
+    $ git clone https://github.com/grantkang/option-selects.git
     ```
 2. Once inside the project directory, install the dependencies.
     ```shell
@@ -80,7 +80,7 @@ Link: https://os.grantkang.com
     ```
     PORT=3001
     DEV_SERVER_PORT=3000
-    DATABASE_URL=postgres://<username>:<password>@localhost/wickedSales
+    DATABASE_URL=postgres://<username>:<password>@localhost/optionSelects
     SESSION_SECRET=secret
     ```
 5. Import the sample database
